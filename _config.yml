@@ -52,25 +52,6 @@ about_content: | # this will include new lines to allow paragraphs
   I am most skilled in: <mark>Java</mark> and <mark>Spring Framework</mark>
 
 content:
-  - title: Projects # Title for the section
-    layout: list # Type of content section (list/text)
-    content:
-      - layout: top-middle
-        title: Super awesome project
-        link: github.com/sproogen
-        # link_text: Project Website
-        additional_links:
-          - title:  sproogen/modern-resume-theme
-            icon: fab fa-github
-            url: github.com/sproogen/modern-resume-theme
-          # - title:  Github page for project (eg. sproogen/modern-resume-theme)
-          #   icon: fab fa-github
-          #   url: Link to project (eg. sproogen.github.io/modern-resume-theme)
-        quote: >
-          This is probably one of the greatest apps ever created, if you don't agree you're probably wrong.
-        description: | # this will include new lines to allow paragraphs
-          I started this project as a way if learning <mark>React</mark> and it has since grown into a fully fledged app. I have learned many skills through this and been I'm very proud of having this in my portfolio. If you don't have a project as awesome as this I would advise you make one.
-
   - title: Experience # Title for the section
     layout: list # Type of content section (list/text)
     content:
@@ -83,10 +64,46 @@ content:
         quote: >
           A global advertising platform targeting 200 million LINE users worldwide, including Japan, Thailand, and Taiwan.
         description: | # this will include new lines to allow paragraphs
+          Developed and maintained a large-scale distributed system for the advertising platform (DSP).
+
           **Achievements**
-          - API and Batch Development in large-scale and data-intensive environments.
-          - Implemented A/B testing to evaluate ad performance through targeting ads or ad creative diversity.
-          - Developed an automatic ad creative generation feature using AI prompt functionality.
+          - Developed systems for managing key advertising domain components such as ad creatives and ad groups (Campaigns), and for delivering ads.
+          - Efficiently managed and aggregated large volumes of data generated from ad events to provide advertisers with performance metrics.
+          - Consistently performed at a top level within the team for project refactoring and error ticket resolution.
+          - Fostered a culture of growth and collaboration by conducting multiple study sessions based on Agile methodologies.
+
+  - title: Projects # Title for the section
+    layout: list # Type of content section (list/text)
+    content:
+      - layout: left
+        title: Report Service
+        # link: github.com/sproogen
+        # link_text: Project Website
+        # additional_links:
+          # - title:  sproogen/modern-resume-theme
+          #  icon: fab fa-github
+          #  url: github.com/sproogen/modern-resume-theme
+          # - title:  Github page for project (eg. sproogen/modern-resume-theme)
+          #   icon: fab fa-github
+          #   url: Link to project (eg. sproogen.github.io/modern-resume-theme)
+        #quote: >
+        #  This is probably one of the greatest apps ever created, if you don't agree you're probably wrong.
+        description: | # this will include new lines to allow paragraphs
+          API and Batch Development in large-scale and data-intensive environments.
+          - major skills:
+            - <mark>Java</mark>, <mark>Spring Boot</mark>, <mark>Apache Kafka</mark>, <mark>MySQL</mark>, <mark>Spring Batch</mark>, <mark>Jenkins</mark>
+      - layout: left
+        title: Split Test
+        description: | # this will include new lines to allow paragraphs
+          Implemented A/B testing to evaluate ad performance through targeting ads or ad creative diversity.
+          - major skills:
+            - <mark>Java</mark>, <mark>Spring Boot</mark>, <mark>Apache Kafka</mark>, <mark>Architecture</mark>
+      - layout: left
+        title: ATC (Ai Text Copy)
+        description: | # this will include new lines to allow paragraphs
+          Developed an automatic ad creative generation feature using AI prompt functionality.
+          - major skills:
+            - <mark>Python</mark>, <mark>FastAPI</mark>, <mark>OpenAI</mark>, <mark>MySQL</mark>, <mark>Architecture</mark>
 
   - title: Education # Title for the section
     layout: list # Type of content section (list/text)
