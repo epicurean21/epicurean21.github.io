@@ -83,7 +83,6 @@ content:
         quote: >
           A global advertising platform targeting 200 million LINE users worldwide, including Japan, Thailand, and Taiwan.
         description: #| # this will include new lines to allow paragraphs
-            **Achievements**
             - API and Batch Development in large-scale and data-intensive environments.
             - Implemented A/B testing to evaluate ad performance through targeting ads or ad creative diversity.
             - Developed an automatic ad creative generation feature using AI prompt functionality.
