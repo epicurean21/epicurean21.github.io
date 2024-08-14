@@ -45,7 +45,7 @@ linkedin_username: jaemin-cho-305771214
 
 # About Section
 # about_title: About Me
-about_profile_image: images/profile_glasses_on.jpg
+about_profile_image: images/profile.jpg
 about_content: | # this will include new lines to allow paragraphs
   I am a backend developer with 3 years of experience in designing and implementing large-scale distributed systems, primarily using Java and Spring. 
   
