@@ -12,7 +12,7 @@ email: 14jaeminc@gmail.com
 website: www.github.com/epicurean21
 
 # Dark Mode (true/false/never)
-darkmode: false
+darkmode: never
 
 # Social links
 github_username:  epicurean21
@@ -78,7 +78,7 @@ content:
     layout: list # Type of content section (list/text)
     content:
       - layout: left
-        title: Report Service
+        title: Generate AI Text & Image
         # link: github.com/sproogen
         # link_text: Project Website
         # additional_links:
@@ -91,24 +91,42 @@ content:
         #quote: >
         #  This is probably one of the greatest apps ever created, if you don't agree you're probably wrong.
         description: | # this will include new lines to allow paragraphs
-          API and Batch Development in large-scale and data-intensive environments.
-          - skill keywords:
+          A project to generate high-performing ad images and text using AI capabilities.
 
-            <mark>Java</mark>, <mark>Spring Boot</mark>, <mark>Apache Kafka</mark>, <mark>MySQL</mark>, <mark>Spring Batch</mark>, <mark>Jenkins</mark>
-      - layout: left
-        title: Split Test
-        description: | # this will include new lines to allow paragraphs
-          Implemented A/B testing to evaluate ad performance through targeting ads or ad creative diversity.
-          - skill keywrods:
+          `2024.01` ~ `ing`
 
-            <mark>Java</mark>, <mark>Spring Boot</mark>, <mark>Apache Kafka</mark>, <mark>Architecture</mark>
-      - layout: left
-        title: Generate Ai Text & Image
-        description: | # this will include new lines to allow paragraphs
-          Developed an automatic ad creative generation feature using AI prompt functionality.
-          - skill keywords:
+          - Led the development and operation of both backend and frontend for the AI feature API system and admin page
+          - Designed a fast and scalable service using Python FastAPI to meet requirements
+          - Established a CI/CD pipeline for seamless system deployment and performance testing
+          - Built a data ingestion pipeline for KPI metric measurement
+          - Conducted research and various tests for new features to enhance the advertising system
           
-            <mark>Python</mark>, <mark>FastAPI</mark>, <mark>Vue.js</mark>, <mark>OpenAI</mark>, <mark>MySQL</mark>, <mark>Architecture</mark>, <mark>AWS</mark>, <mark>OpenGraph</mark>
+          skill keywords: `Python`, `FastAPI`, `OpenAI`, `Vue.js`, `MySQL`, `Architecture`, `AWS`, `OpenGraph`
+
+      - layout: left
+        title: Report Service
+        description: | # this will include new lines to allow paragraphs
+          A project to ingest over 30 million data points daily through a real-time asynchronous pipeline and process them via batch jobs to provide accurate advertising performance metrics to users.
+          
+          `2023.03` ~ `ing` 
+
+          - Utilized Spring Batch and Jenkins to partition and load overall report metrics on a daily basis
+          - Managed the report metrics domain and provided diverse advertising metric results using native queries
+          - Improved asynchronous processing tasks to prevent overload and performed refactoring for performance optimization
+          
+          skill keywrods: `Java`, `Spring Boot`, `Apache Kafka`, `MySQL`, `Spring Batch`, `Jenkins` 
+
+      - layout: left
+        title: Split Test (ADs A/B Test)
+        description: |
+          A project to implement A/B testing functionality to evaluate optimal ad performance using targeted ads or ad creative diversity. 
+          
+          `2023.09` ~ `2024.03`
+
+          - Participated in and implemented the design of a complex new system architecture for the domain
+          - Developed asynchronous logic processing for feature optimization and flexible API handling in a distributed system
+          
+          skill keywords: `Java`, `Spring Boot`, `Architecture`, `Apache Kafka`
 
   - title: Education # Title for the section
     layout: list # Type of content section (list/text)
