@@ -47,7 +47,7 @@ linkedin_username: jaemin-cho-305771214
 # about_title: About Me
 about_profile_image: images/profile_glasses_on.jpg
 about_content: | # this will include new lines to allow paragraphs
-  Hello, I’m a backend developer with 3 years of experience in designing and implementing large-scale distributed systems, primarily using Java and Spring. 
+  I am a backend developer with 3 years of experience in designing and implementing large-scale distributed systems, primarily using Java and Spring. 
   
   Currently, I work on the advertising system development team at LINE, the leading messenger app in Japan, Taiwan, and Thailand, where we handle billions of data points daily. I have a deep interest in the advertising domain and continuously strive to design system architectures that provide the best user experience.
 
@@ -103,12 +103,12 @@ content:
 
             <mark>Java</mark>, <mark>Spring Boot</mark>, <mark>Apache Kafka</mark>, <mark>Architecture</mark>
       - layout: left
-        title: ATC (Ai Text Copy)
+        title: Generate Ai Text & Image
         description: | # this will include new lines to allow paragraphs
           Developed an automatic ad creative generation feature using AI prompt functionality.
           - skill keywords:
           
-            <mark>Python</mark>, <mark>FastAPI</mark>, <mark>OpenAI</mark>, <mark>MySQL</mark>, <mark>Architecture</mark>
+            <mark>Python</mark>, <mark>FastAPI</mark>, <mark>Vue.js</mark>, <mark>OpenAI</mark>, <mark>MySQL</mark>, <mark>Architecture</mark>, <mark>AWS</mark>, <mark>OpenGraph</mark>
 
   - title: Education # Title for the section
     layout: list # Type of content section (list/text)
