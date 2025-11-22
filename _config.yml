@@ -54,11 +54,11 @@ about_content: | # this will include new lines to allow paragraphs
   I am always on the lookout for better solutions and contribute to enhancing the performance and stability of the advertising platform. With this experience, I am committed to developing innovative, user-centric systems in the future.
 
 content:
-  - title: Experience # Title for the section
-    layout: list # Type of content section (list/text)
+  - title: Experience
+    layout: list
     content:
       - layout: left
-        title: LINE+
+        title: 'LINE+ <img src="images/line_logo.png" alt="LINE" style="height: 1.2em; vertical-align: middle; margin-left: 0.3em;">'
         link: https://linepluscorp.com/
         # link_text: boringcompany.com
         sub_title: LINE Ads Platform Developer
