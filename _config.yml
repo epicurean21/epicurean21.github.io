@@ -78,7 +78,7 @@ content:
     layout: list # Type of content section (list/text)
     content:
       - layout: left
-        title: AI-Powered Ad Campaign Generator
+        title: AI-Driven Ad Campaign Automation System
         description: | # this will include new lines to allow paragraphs
           A comprehensive AI-driven system that automates the entire ad campaign creation process using LangGraph (LangChain) agents.
 
@@ -109,7 +109,7 @@ content:
           skill keywords: `Python`, `FastAPI`, `OpenAI`, `Generative AI`, `Architecture`
 
       - layout: left
-        title: DSP Core Ad Management System
+        title: DSP Ad Management System
         description: |
           A comprehensive ad management system that handles the core DSP functionality including campaign management, targeting data, and ad creative delivery.
           
