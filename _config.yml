@@ -7,7 +7,7 @@ version: 2
 
 # Personal info
 name: Jae Min Cho
-title: Junior Backend Developer
+title: Junior Software Engineer
 email: 14jaeminc@gmail.com
 website: www.github.com/epicurean21
 
@@ -21,7 +21,7 @@ github_username:  epicurean21
 # facebook_username: jekyll
 # flickr_username: jekyll
 # instagram_username: jameswgrant
-linkedin_username: jaemin-cho-305771214
+linkedin_username: jae-min-cho
 # xing_username: jekyll
 # pinterest_username: jekyll
 # youtube_username: globalmtb
@@ -47,7 +47,7 @@ linkedin_username: jaemin-cho-305771214
 # about_title: About Me
 about_profile_image: images/profile.jpg
 about_content: | # this will include new lines to allow paragraphs
-  I am a backend developer with 3 years of experience in designing and implementing large-scale distributed systems, primarily using Java and Spring. 
+  I am a backend developer with 4 years of experience in designing and implementing large-scale distributed systems, primarily using Java and Spring. 
   
   Currently, I work on the advertising system development team at LINE, the leading messenger app in Japan, Taiwan, and Thailand, where we handle billions of data points daily. I have a deep interest in the advertising domain and continuously strive to design system architectures that provide the best user experience.
 
@@ -78,55 +78,81 @@ content:
     layout: list # Type of content section (list/text)
     content:
       - layout: left
-        title: Generate AI Text & Image
-        # link: github.com/sproogen
-        # link_text: Project Website
-        # additional_links:
-          # - title:  sproogen/modern-resume-theme
-          #  icon: fab fa-github
-          #  url: github.com/sproogen/modern-resume-theme
-          # - title:  Github page for project (eg. sproogen/modern-resume-theme)
-          #   icon: fab fa-github
-          #   url: Link to project (eg. sproogen.github.io/modern-resume-theme)
-        #quote: >
-        #  This is probably one of the greatest apps ever created, if you don't agree you're probably wrong.
+        title: AI-Powered Ad Campaign Generator
         description: | # this will include new lines to allow paragraphs
-          A project to generate high-performing ad images and text using AI capabilities.
+          A comprehensive AI-driven system that automates the entire ad campaign creation process using LangGraph (LangChain) agents.
+
+          `2025.05` ~ `ing`
+
+          - Designed and implemented an intelligent agent-based architecture using Python LangGraph (LangChain) for automated ad campaign generation
+          - Developed a multi-agent system that generates complete ad campaigns, including targeting strategies and creative assets, from minimal input (brand name, LP URL, budget)
+          - Architected an end-to-end solution that autonomously creates optimized advertising campaigns with proper targeting configurations
+          - Integrated AI capabilities to intelligently analyze business requirements and generate contextually relevant advertising materials
+          - Built orchestration logic to coordinate multiple AI agents for campaign planning, audience targeting, and creative generation
+          
+          skill keywords: `LangChain`, `AI Agent`, `Architecture`, `Campaign Automation`
+
+      - layout: left
+        title: Generative AI Ad Creative
+        description: | # this will include new lines to allow paragraphs
+          A project to automatically generate high-performing ad images and text using generative AI capabilities.
 
           `2024.01` ~ `ing`
 
-          - Led the development and operation of both backend and frontend for the AI feature API system and admin page
-          - Designed a fast and scalable service using Python FastAPI to meet requirements
+          - Led the development and operation of both backend and frontend for the AI-powered ad creative generation system
+          - Implemented automated generation of ad creatives (images and text) using advanced AI models
+          - Designed a fast and scalable service using Python FastAPI to meet high-performance requirements
           - Established a CI/CD pipeline for seamless system deployment and performance testing
-          - Built a data ingestion pipeline for KPI metric measurement
-          - Conducted research and various tests for new features to enhance the advertising system
+          - Built a data ingestion pipeline for KPI metric measurement and creative performance analysis
+          - Conducted research and various tests to optimize AI-generated creative quality and effectiveness
           
-          skill keywords: `Python`, `FastAPI`, `OpenAI`, `Vue.js`, `MySQL`, `Architecture`, `AWS`, `OpenGraph`
+          skill keywords: `Python`, `FastAPI`, `OpenAI`, `Generative AI`, `Architecture`
+
+      - layout: left
+        title: DSP Core Ad Management System
+        description: |
+          A comprehensive ad management system that handles the core DSP functionality including campaign management, targeting data, and ad creative delivery.
+          
+          `2022.01` ~ `ing`
+
+          - Developed and maintained the core DSP Admanager system responsible for campaign lifecycle management
+          - Implemented robust data storage and management for ad campaigns and targeting configurations
+          - Built ad creative management system ensuring proper ad serving and delivery
+          - Designed and developed scalable architecture to handle high-volume ad serving requests
+          - Managed the entire ad data pipeline from creation to serving, ensuring data consistency and reliability
+          - Developed RESTful APIs and internal services using Java Spring Boot for seamless integration with ad serving infrastructure
+          
+          skill keywords: `Java`, `Spring Boot`, `Architecture`, `MySQL`, `Ad Campaign Management`, `Ad Serving`, `Distributed Systems`
 
       - layout: left
         title: Report Service
         description: | # this will include new lines to allow paragraphs
-          A project to ingest over 30 million data points daily through a real-time asynchronous pipeline and process them via batch jobs to provide accurate advertising performance metrics to users.
+          A large-scale reporting system for the advertising DSP platform that processes massive volumes of ad performance data and delivers actionable insights to advertisers.
           
           `2023.03` ~ `ing` 
 
-          - Utilized Spring Batch and Jenkins to partition and load overall report metrics on a daily basis
-          - Managed the report metrics domain and provided diverse advertising metric results using native queries
-          - Improved asynchronous processing tasks to prevent overload and performed refactoring for performance optimization
+          - Designed and implemented a high-throughput data pipeline handling over 30 million ad events daily
+          - Built real-time asynchronous processing system to ingest and aggregate large-scale advertising performance data
+          - Utilized Spring Batch and Jenkins to partition and process daily report metrics efficiently
+          - Developed complex aggregation logic and native queries to provide diverse advertising performance metrics
+          - Optimized asynchronous processing tasks to prevent system overload and ensure data accuracy
+          - Performed continuous refactoring for performance optimization and system scalability
+          - Delivered accurate and timely advertising performance reports to advertisers through efficient batch processing
           
-          skill keywrods: `Java`, `Spring Boot`, `Apache Kafka`, `MySQL`, `Spring Batch`, `Jenkins` 
+          skill keywords: `Java`, `Spring Boot`, `Apache Kafka`, `MySQL`, `Spring Batch`, `Jenkins`, `Data Pipeline`, `High-Volume Processing` 
 
-      - layout: left
-        title: Split Test (ADs A/B Test)
-        description: |
-          A project to implement A/B testing functionality to evaluate optimal ad performance using targeted ads or ad creative diversity. 
-          
-          `2023.09` ~ `2024.03`
-
-          - Participated in and implemented the design of a complex new system architecture for the domain
-          - Developed asynchronous logic processing for feature optimization and flexible API handling in a distributed system
-          
-          skill keywords: `Java`, `Spring Boot`, `Architecture`, `Apache Kafka`
+#      OLD PROJECT
+#      - layout: left
+#        title: Split Test (ADs A/B Test)
+#        description: |
+#          A project to implement A/B testing functionality to evaluate optimal ad performance using targeted ads or ad creative diversity.
+#
+#          `2023.09` ~ `2024.03`
+#
+#          - Participated in and implemented the design of a complex new system architecture for the domain
+#          - Developed asynchronous logic processing for feature optimization and flexible API handling in a distributed system
+#
+#          skill keywords: `Java`, `Spring Boot`, `Architecture`, `Apache Kafka`
 
   - title: Education # Title for the section
     layout: list # Type of content section (list/text)
