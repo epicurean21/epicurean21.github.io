@@ -19,7 +19,7 @@ profile:
     - label: building
       value: Ad creative agents
     - label: stack
-      value: Java · Python
+      value: Java & Spring Boot · Python & LangGraph
     - label: domain
       value: DSP · Generative AI
 
@@ -173,6 +173,12 @@ ui:
   skip: Skip to content
   stages_label: Main processing flow
   stack_label: Tech stack
+  diagrams_label: Project diagrams
+  campaign_graph_title: Campaign agent workflow concept
+  campaign_graph_desc: A conceptual workflow with brief analysis, campaign planning, parallel targeting and creative agents, quality evaluation, retries and human review. This illustrates a possible design, rather than the deployed architecture.
+  campaign_graph_caption: Campaign planning → generation → review · concept
+  graph_pause: Pause
+  graph_play: Auto-play
   graph_title: Asynchronous creative-agent request flow
   graph_desc: A LangGraph conversational client requests creative generation from the A2A server. The server stores the task and dispatches work through Pulsar. Worker result events update tasks and artifacts, which are returned to the client through SSE or status polling.
   graph_caption: creative request → async processing → results · simplified

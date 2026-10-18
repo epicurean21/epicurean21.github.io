@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500{% if lang == 'ko' %}&family=Gowun+Batang:wght@400;700{% endif %}&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+  <script src="{{ '/assets/diagrams.js' | relative_url }}" defer></script>
   {% seo %}
 </head>
 <body>
@@ -60,36 +61,80 @@
         </dl>
       </div>
 
-      <figure class="graph reveal" style="--i:3">
-        <div class="graph-bar mono" aria-hidden="true"><i></i><i></i><i></i><span>creative generation</span></div>
-        <svg viewBox="0 0 320 400" role="img" aria-labelledby="g-title g-desc">
-          <title id="g-title">{{ ui.graph_title }}</title>
-          <desc id="g-desc">{{ ui.graph_desc }}</desc>
-          <defs>
-            <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0 0 L8 4 L0 8 z" class="arrowhead"/>
-            </marker>
-          </defs>
-          <g class="edges" marker-end="url(#arrow)">
-            <path d="M160 44 V70"/>
-            <path d="M160 100 V126"/>
-            <path d="M160 156 V182"/>
-            <path d="M160 212 V238"/>
-            <path d="M160 268 V294"/>
-            <path d="M160 324 V350"/>
-          </g>
-          <g class="nodes">
-            <g class="node term" style="--d:0"><rect x="70" y="14" width="180" height="30" rx="8"/><text x="160" y="32.5">LangGraph chat</text></g>
-            <g class="node" style="--d:1"><rect x="70" y="70" width="180" height="30" rx="8"/><text x="160" y="88.5">A2A server</text></g>
-            <g class="node" style="--d:2"><rect x="70" y="126" width="180" height="30" rx="8"/><text x="160" y="144.5">Pulsar request</text></g>
-            <g class="node" style="--d:3"><rect x="70" y="182" width="180" height="30" rx="8"/><text x="160" y="200.5">generation worker</text></g>
-            <g class="node" style="--d:4"><rect x="70" y="238" width="180" height="30" rx="8"/><text x="160" y="256.5">Pulsar result</text></g>
-            <g class="node" style="--d:5"><rect x="70" y="294" width="180" height="30" rx="8"/><text x="160" y="312.5">task + artifacts</text></g>
-            <g class="node term" style="--d:6"><rect x="70" y="350" width="180" height="30" rx="8"/><text x="160" y="368.5">SSE / polling</text></g>
-          </g>
-        </svg>
-        <figcaption class="mono">{{ ui.graph_caption | escape }}</figcaption>
-      </figure>
+      <div class="graph reveal" style="--i:3" role="region" aria-label="{{ ui.diagrams_label }}">
+        <div class="graph-slides">
+          <figure class="graph-slide" id="campaign-diagram">
+            <div class="graph-bar mono" aria-hidden="true"><i></i><i></i><i></i><span>campaign_graph.py</span></div>
+            <svg viewBox="0 0 320 400" role="img" aria-labelledby="campaign-title campaign-desc">
+              <title id="campaign-title">{{ ui.campaign_graph_title }}</title>
+              <desc id="campaign-desc">{{ ui.campaign_graph_desc }}</desc>
+              <defs>
+                <marker id="campaign-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L8 4 L0 8 z" class="arrowhead"/>
+                </marker>
+              </defs>
+              <g class="edges" marker-end="url(#campaign-arrow)">
+                <path d="M160 30 V54"/>
+                <path d="M160 86 V110"/>
+                <path d="M160 142 C160 160 80 156 80 174"/>
+                <path d="M160 142 C160 160 240 156 240 174"/>
+                <path d="M80 206 C80 224 160 220 160 238"/>
+                <path d="M240 206 C240 224 160 220 160 238"/>
+                <path d="M160 270 V302"/>
+                <path d="M160 334 V362"/>
+                <path class="cond" d="M235 255 C292 255 312 236 296 208"/>
+              </g>
+              <text class="edge-label" x="316" y="290" text-anchor="end">retry if score &lt; τ</text>
+              <g class="nodes">
+                <g class="node term" style="--d:0"><rect x="125" y="8" width="70" height="22" rx="11"/><text x="160" y="22.5">__start__</text></g>
+                <g class="node" style="--d:1"><rect x="85" y="56" width="150" height="30" rx="8"/><text x="160" y="74.5">brief_analyzer</text></g>
+                <g class="node" style="--d:2"><rect x="85" y="112" width="150" height="30" rx="8"/><text x="160" y="130.5">campaign_planner</text></g>
+                <g class="node" style="--d:3"><rect x="10" y="176" width="140" height="30" rx="8"/><text x="80" y="194.5">targeting_agent</text></g>
+                <g class="node" style="--d:3"><rect x="170" y="176" width="140" height="30" rx="8"/><text x="240" y="194.5">creative_agent</text></g>
+                <g class="node eval" style="--d:4"><rect x="85" y="240" width="150" height="30" rx="8"/><text x="160" y="258.5">evaluator</text></g>
+                <g class="node hitl" style="--d:5"><rect x="85" y="304" width="150" height="30" rx="8"/><text x="160" y="322.5">human_review ⏸</text></g>
+                <g class="node term" style="--d:6"><rect x="125" y="364" width="70" height="22" rx="11"/><text x="160" y="378.5">__end__</text></g>
+              </g>
+            </svg>
+            <figcaption class="mono">{{ ui.campaign_graph_caption | escape }}</figcaption>
+          </figure>
+          <figure class="graph-slide" id="creative-diagram" hidden>
+            <div class="graph-bar mono" aria-hidden="true"><i></i><i></i><i></i><span>creative generation</span></div>
+            <svg viewBox="0 0 320 400" role="img" aria-labelledby="g-title g-desc">
+              <title id="g-title">{{ ui.graph_title }}</title>
+              <desc id="g-desc">{{ ui.graph_desc }}</desc>
+              <defs>
+                <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L8 4 L0 8 z" class="arrowhead"/>
+                </marker>
+              </defs>
+              <g class="edges" marker-end="url(#arrow)">
+                <path d="M160 44 V70"/>
+                <path d="M160 100 V126"/>
+                <path d="M160 156 V182"/>
+                <path d="M160 212 V238"/>
+                <path d="M160 268 V294"/>
+                <path d="M160 324 V350"/>
+              </g>
+              <g class="nodes">
+                <g class="node term" style="--d:0"><rect x="70" y="14" width="180" height="30" rx="8"/><text x="160" y="32.5">LangGraph chat</text></g>
+                <g class="node" style="--d:1"><rect x="70" y="70" width="180" height="30" rx="8"/><text x="160" y="88.5">A2A server</text></g>
+                <g class="node" style="--d:2"><rect x="70" y="126" width="180" height="30" rx="8"/><text x="160" y="144.5">Pulsar request</text></g>
+                <g class="node" style="--d:3"><rect x="70" y="182" width="180" height="30" rx="8"/><text x="160" y="200.5">generation worker</text></g>
+                <g class="node" style="--d:4"><rect x="70" y="238" width="180" height="30" rx="8"/><text x="160" y="256.5">Pulsar result</text></g>
+                <g class="node" style="--d:5"><rect x="70" y="294" width="180" height="30" rx="8"/><text x="160" y="312.5">task + artifacts</text></g>
+                <g class="node term" style="--d:6"><rect x="70" y="350" width="180" height="30" rx="8"/><text x="160" y="368.5">SSE / polling</text></g>
+              </g>
+            </svg>
+            <figcaption class="mono">{{ ui.graph_caption | escape }}</figcaption>
+          </figure>
+        </div>
+        <div class="graph-controls mono" hidden>
+          <button type="button" data-diagram aria-controls="campaign-diagram" aria-pressed="true" aria-label="1 · {{ ui.campaign_graph_title }}">1</button>
+          <button type="button" data-diagram aria-controls="creative-diagram" aria-pressed="false" aria-label="2 · {{ ui.graph_title }}">2</button>
+          <button type="button" class="graph-rotation" data-play="{{ ui.graph_play }}" data-pause="{{ ui.graph_pause }}">{{ ui.graph_pause }}</button>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="focus">

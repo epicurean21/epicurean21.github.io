@@ -19,7 +19,7 @@ profile:
     - label: 개발 중
       value: 광고 소재 에이전트
     - label: 스택
-      value: Java · Python
+      value: Java & Spring Boot · Python & LangGraph
     - label: 도메인
       value: DSP · 생성형 AI
 
@@ -173,6 +173,12 @@ ui:
   skip: 본문으로 건너뛰기
   stages_label: 주요 처리 흐름
   stack_label: 기술 스택
+  diagrams_label: 프로젝트 다이어그램
+  campaign_graph_title: 캠페인 에이전트 워크플로우 개념도
+  campaign_graph_desc: 브리프 분석과 캠페인 기획 후 타겟팅·소재 에이전트를 병렬 실행하고, 품질 평가·재시도·사람의 검수를 거치는 개념적 흐름입니다. 배포된 구조를 그대로 나타낸 것이 아니라 가능한 설계 예시입니다.
+  campaign_graph_caption: 캠페인 기획 → 생성 → 검수 · 개념도
+  graph_pause: 일시정지
+  graph_play: 자동 전환
   graph_title: 소재 에이전트의 비동기 요청 흐름
   graph_desc: LangGraph 대화 클라이언트가 A2A 서버에 소재 생성을 요청합니다. 서버는 작업을 저장하고 Pulsar로 워커에 요청을 전달합니다. 워커의 결과 이벤트를 받아 작업과 결과물을 갱신하고, SSE나 상태 조회로 클라이언트에 전달합니다.
   graph_caption: 소재 생성 요청 → 비동기 처리 → 결과 전달 · 개략도

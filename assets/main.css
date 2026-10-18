@@ -186,7 +186,7 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
 .facts dt { color: var(--ink-3); }
 .facts dd { margin: 0.15rem 0 0; font-weight: 600; letter-spacing: -0.02em; }
 
-/* LangGraph-style diagram */
+/* Project diagrams */
 .graph {
   margin: 0;
   background: var(--card);
@@ -195,6 +195,21 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
   box-shadow: 0 1px 0 var(--rule), 0 30px 60px -30px rgb(0 0 0 / 0.25);
   overflow: hidden;
 }
+.graph-slides { display: grid; }
+.graph-slide { grid-area: 1 / 1; min-width: 0; margin: 0; display: flex; flex-direction: column; }
+/* Reserve both slide heights so switching captions does not shift the page. */
+.graph-slide[hidden] { display: flex; visibility: hidden; }
+.graph-controls:not([hidden]) { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1rem; border-top: 1px solid var(--rule); }
+.graph-controls button {
+  min-width: 36px; min-height: 36px;
+  padding: 0.35rem 0.65rem;
+  font: inherit; color: var(--ink-2);
+  border: 1px solid var(--rule); border-radius: 8px;
+  background: var(--paper); cursor: pointer;
+}
+.graph-controls button:hover { border-color: var(--green-ink); }
+.graph-controls button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.graph-controls .graph-rotation { margin-left: auto; }
 .graph-bar {
   display: flex; align-items: center; gap: 6px;
   padding: 0.7rem 1rem;
@@ -205,6 +220,7 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
 .graph-bar span { margin-left: 0.6rem; }
 .graph svg { display: block; width: 100%; height: auto; padding: 1.25rem 1.25rem 0.5rem; }
 .graph figcaption {
+  flex: 1;
   padding: 0.7rem 1rem;
   border-top: 1px dashed var(--rule);
   color: var(--ink-3);
