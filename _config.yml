@@ -8,13 +8,13 @@ favicon: images/favicon.ico
 lang: en
 
 # Contact (resume content lives in _data/resume/en.yml and ko.yml)
-email: 14jaeminc@gmail.com
+email: jm_company@naver.com
 github_username: epicurean21
 linkedin_username: jae-min-cho
 
 author:
   name: Jae Min Cho
-  email: 14jaeminc@gmail.com
+  email: jm_company@naver.com
 
 plugins:
   - jekyll-seo-tag
