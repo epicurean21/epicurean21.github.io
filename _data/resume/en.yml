@@ -58,18 +58,18 @@ projects:
     kicker: a2a · event-driven · genai
     period: 2026.03 — present
     ongoing: true
-    summary: A platform that generates ad copy and images for a LangGraph conversational client. I primarily own the A2A server and asynchronous workers, and am extending the platform with job APIs for an external campaign agent. The messaging design below is explained in Kafka terms; the implementation uses Pulsar.
-    flow: [A2A request, request topic, generation workers, result topic, result storage, SSE · polling]
+    summary: An event-driven platform that uses Kafka to generate ad copy and images for a LangGraph conversational client. I primarily own the A2A server and asynchronous workers, and am extending the platform with job APIs for an external campaign agent.
+    flow: [A2A request, Kafka request topic, generation workers, Kafka result topic, result storage, SSE · polling]
     highlights:
       - Built the **A2A (Agent-to-Agent) server** with Java 21 and Spring Boot 3, including JSON-RPC, SSE, an Agent Card and PostgreSQL task/artifact storage. Supported multiple outputs per request and references to earlier images in follow-up requests.
-      - Moved long-running image generation to **event-driven MQ workers**, with separate request and result topics. Bounded in-flight work and tracked per-artifact outcomes so partial failures retain successful outputs.
-      - Designed consumers for **at-least-once delivery**, with acknowledgment after processing, redelivery on processing errors, a retry limit and a dead-letter queue (DLQ). Used **(taskId, artifactId) uniqueness and conditional task-state updates** to make result persistence and finalization idempotent.
-      - Keyed events by **taskId** to group each task's events within a topic. In Kafka terms, this maps to a **partition key with ordering within a topic partition**, combined with sequential result consumption.
-      - Implemented image generation, reference-based generation, editing, resizing and variations for A/B comparison with OpenAI and Gemini. Injected brand information into prompts and specified the language of in-image copy for each target market.
+      - Moved long-running image generation to **Kafka-based asynchronous workers**, with separate request and result topics. Bounded in-flight work and tracked per-artifact outcomes so partial failures retain successful outputs.
+      - Designed for **Kafka's at-least-once consumption model**, with bounded retries and a dead-letter queue (DLQ). Used **(taskId, artifactId) uniqueness and conditional task-state updates** to make result persistence and finalization idempotent under redelivery.
+      - Used **taskId as the partition key** to route each task's events to the same partition within a topic and consume results in partition order.
+      - Integrated generative models for image generation, reference-based generation, editing, resizing and variations for A/B comparison. Injected brand information into prompts and specified the language of in-image copy for each target market.
       - Added a **credit check that blocks generation when credit cannot be verified** to the LangGraph conversation flow, and aligned infrastructure, model and policy error categories between the server and workers.
       - Implemented **job-based REST APIs and per-feature quotas** for an external campaign agent. Reused the existing generation path with dispatch after transaction commit and row locks for quota reservation. Integration work is ongoing.
       - Recorded models, settings, prompt versions and available token usage on generated artifacts. Added request- and artifact-level Langfuse tracing to investigate quality and latency issues.
-    stack: [LangGraph, A2A, Java 21, Spring Boot 3, Python, FastAPI, Event-driven MQ, PostgreSQL, OpenAI, Gemini, Langfuse, OpenTelemetry]
+    stack: [Java & Spring Boot, Python & LangGraph, A2A, Kafka, PostgreSQL, LLM]
 
   - title: Multi-turn LangGraph Campaign Agent
     kicker: langgraph supervisor · tools · retrieval
@@ -82,7 +82,7 @@ projects:
       - "**Removed the LLM call from campaign preview generation**, building settings directly from extracted metadata. Also made ad group previews explicitly use the extracted age and gender targeting values."
       - Improved age validation for country and account policies and checks for allowed campaign objectives. Managed domain rules separately from Jinja2 prompt templates.
       - Built a **FastMCP tool server** exposing campaign, ad group and ad retrieval/creation, creative generation and landing-page analysis, with retry and error handling.
-    stack: [LangGraph, LangChain, MCP, RAG, OpenSearch, FastAPI, MongoDB, OpenAI]
+    stack: [Python & LangGraph, MCP, RAG, OpenSearch, LLM]
 
   - title: Generative AI Ad Creative Backend
     kicker: genai services
@@ -90,13 +90,13 @@ projects:
     summary: A copy and image generation backend for LINE Ads and other LY Corporation ad products. I built the image outpainting service from scratch and extended copy generation, prompt management and credit features.
     flow: [image request, Kafka, model call, result storage, status polling]
     highlights:
-      - Built an **outpainting service for multiple ad aspect ratios** with Java 21, Spring Boot 3 and Vertex AI. Implemented asynchronous Kafka processing, event publication after transaction commit, and per-ratio result and request-status tracking.
+      - Built an **outpainting service for multiple ad aspect ratios**, integrating image generation models with Java 21 and Spring Boot 3. Implemented asynchronous Kafka processing, event publication after transaction commit, and per-ratio result and request-status tracking.
       - Developed **landing-page brand extraction**, returning empty values for unsupported facts and accepting industry classifications only when they match an allowed list.
-      - Implemented parallel multi-layout generation and Gemini-based inpainting, and integrated external image quality assessment and smart cropping.
+      - Implemented parallel multi-layout generation and model-based inpainting, and integrated external image quality assessment and smart cropping.
       - Profiled each stage of crawled-image processing, then added image-size limits, removed redundant downloads and applied upload timeouts.
-      - Extended ad copy generation and **prompt version management APIs**. Built daily Airflow/Hive tables for comparing the performance of AI-generated and other ad copy.
+      - Extended ad copy generation and **prompt version management APIs**. Built daily batch datasets for comparing the performance of AI-generated and other ad copy.
       - Developed credit consumption, weekly grants and per-feature credit types, with locks for concurrent account creation and grants. Improved request metrics, OpenTelemetry/Sentry tracing and Kubernetes deployment configuration.
-    stack: [Java 21, Spring Boot 3, Kafka, Redis, MySQL, Python, FastAPI, OpenAI, Gemini, Vertex AI, Airflow, Hive, Kubernetes]
+    stack: [Java & Spring Boot, Python & FastAPI, Kafka, Redis, MySQL, LLM]
 
   - title: Ad Copy Quality Evaluation & Regression Testing
     kicker: evaluation · llm-as-a-judge
@@ -108,7 +108,7 @@ projects:
       - Configured an LLM to assess grammar, writing conventions and potential third-party rights issues, and to score clarity, persuasiveness, creativity, target relevance and set coherence on a **five-point scale**.
       - Built integration tests that call the generation API in parallel using cases from a configuration repository. **Test pass/fail is based on rule checks**; LLM assessments are recorded for review.
       - Produced Markdown/JSON reports and CI summaries to compare model and prompt changes by market.
-    stack: [LLM-as-a-Judge, Python, FastAPI, OpenAI, Java 21, JUnit 5, GitHub Actions, Docker]
+    stack: [Python & FastAPI, Java, LLM, LLM-as-a-Judge, GitHub Actions]
 
   - title: LINE Ads Manager — DSP Core & Reporting
     kicker: dsp core · data pipeline
@@ -121,7 +121,7 @@ projects:
       - Extended and stabilized the existing **Kafka-based asynchronous reporting pipeline**. Tuned consumer and job concurrency, and improved multi-account CSV generation, compression and upload paths.
       - Extended **return on ad spend (ROAS) and conversion-value** metrics and breakdowns by carousel slot and app bundle, fixing related aggregation and calculation errors.
       - Introduced query priorities and timeouts by user type and migrated Kylin queries to a new cluster. Tracked operations through request, success and failure metrics and execution records.
-    stack: [Java, Spring Boot, JPA, QueryDSL, MyBatis, MySQL, Kafka, Kylin, Druid, Spring Batch, Prometheus]
+    stack: [Java & Spring Boot, JPA & QueryDSL, MySQL, Kafka, Kylin]
 
 experience:
   - company: LINE Plus (LINE+)
@@ -131,7 +131,7 @@ experience:
     period: 2022.01 — present
     summary: Started with ad management and performance reporting for LINE Ads, then expanded into generative AI services and agent backends in the same advertising domain.
     highlights:
-      - "**2026 —** Built the creative agent's A2A server and event-driven generation workers, plus ad copy evaluation and regression tests."
+      - "**2026 —** Built the creative agent's A2A server and Kafka-based generation workers, plus ad copy evaluation and regression tests."
       - "**2025 – 2026 —** Developed campaign-agent retrieval, previews and policy validation, and an MCP tool server."
       - "**2024 – 2026 —** Built the image generation service; extended copy generation, prompt management and credit features."
       - "**2022 – 2025 —** Developed and operated DSP campaign management, Split Test, configuration validation and performance reporting."
@@ -139,13 +139,13 @@ experience:
 
 skills:
   - group: AI / LLM
-    items: [LangGraph, LangChain, A2A, MCP, RAG, OpenSearch vector search, LLM-as-a-Judge, Langfuse, OpenAI, Gemini, Vertex AI, AWS Bedrock]
+    items: [LLM, LangGraph, A2A, MCP, RAG, OpenSearch, LLM-as-a-Judge]
   - group: Backend
-    items: [Java 21, Spring Boot 3, Python, FastAPI, JPA · QueryDSL, MyBatis]
+    items: [Java & Spring Boot, Python & FastAPI, JPA & QueryDSL]
   - group: Data & Messaging
-    items: [Kafka, Kylin, Druid, Airflow, Hive, Spring Batch, MySQL, PostgreSQL, MongoDB, Redis, Elasticsearch]
+    items: [Kafka, MySQL, PostgreSQL, Redis, Kylin]
   - group: Operations & Quality
-    items: [Kubernetes, Kustomize, GitHub Actions, Docker, OpenTelemetry, Sentry, Prometheus, TDD]
+    items: [Kubernetes, Docker, GitHub Actions, OpenTelemetry, Langfuse]
   - group: Advertising
     items: [campaign structure, Split Test, targeting, bid · budget validation, CBO, ad creatives, ROAS reporting]
 
@@ -181,9 +181,9 @@ ui:
   campaign_graph_caption: Campaign planning → generation → review · concept
   graph_pause: Pause
   graph_play: Auto-play
-  graph_title: Event-driven creative generation in Kafka terms
-  graph_desc: An MQ workflow expressed through Kafka topic and consumer concepts. The A2A server stores the task and publishes a request event; workers consume requests and publish result events. The server persists results idempotently and returns them through SSE or status polling. Events are keyed by taskId; Kafka ordering applies within a topic partition.
-  graph_caption: request topic → workers → result topic · Kafka concept mapping
+  graph_title: Kafka-based asynchronous creative generation
+  graph_desc: The A2A server stores the task and publishes a request to Kafka. Workers consume requests and publish result events to a separate Kafka topic. The server persists results idempotently and returns them through SSE or status polling. Events use taskId as the partition key, and results are consumed in order within each topic partition.
+  graph_caption: Kafka requests → generation workers → Kafka results
   sections_label: Page sections
   portrait_alt: Portrait of Jae Min Cho
   updated: Last updated
