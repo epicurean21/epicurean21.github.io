@@ -58,16 +58,18 @@ projects:
     kicker: a2a · event-driven · genai
     period: 2026.03 — present
     ongoing: true
-    summary: A platform that generates ad copy and images for a LangGraph conversational client. I primarily own the A2A server and asynchronous workers, and am extending the platform with job APIs for an external campaign agent.
-    flow: [A2A request, Pulsar, generation workers, result storage, SSE · polling]
+    summary: A platform that generates ad copy and images for a LangGraph conversational client. I primarily own the A2A server and asynchronous workers, and am extending the platform with job APIs for an external campaign agent. The messaging design below is explained in Kafka terms; the implementation uses Pulsar.
+    flow: [A2A request, request topic, generation workers, result topic, result storage, SSE · polling]
     highlights:
       - Built the **A2A (Agent-to-Agent) server** with Java 21 and Spring Boot 3, including JSON-RPC, SSE, an Agent Card and PostgreSQL task/artifact storage. Supported multiple outputs per request and references to earlier images in follow-up requests.
-      - Moved long-running image generation to **asynchronous Pulsar workers**. Bounded concurrency, persisted duplicate results idempotently, and tracked success or failure per artifact so partial failures retain successful outputs.
+      - Moved long-running image generation to **event-driven MQ workers**, with separate request and result topics. Bounded in-flight work and tracked per-artifact outcomes so partial failures retain successful outputs.
+      - Designed consumers for **at-least-once delivery**, with acknowledgment after processing, redelivery on processing errors, a retry limit and a dead-letter queue (DLQ). Used **(taskId, artifactId) uniqueness and conditional task-state updates** to make result persistence and finalization idempotent.
+      - Keyed events by **taskId** to group each task's events within a topic. In Kafka terms, this maps to a **partition key with ordering within a topic partition**, combined with sequential result consumption.
       - Implemented image generation, reference-based generation, editing, resizing and variations for A/B comparison with OpenAI and Gemini. Injected brand information into prompts and specified the language of in-image copy for each target market.
       - Added a **credit check that blocks generation when credit cannot be verified** to the LangGraph conversation flow, and aligned infrastructure, model and policy error categories between the server and workers.
       - Implemented **job-based REST APIs and per-feature quotas** for an external campaign agent. Reused the existing generation path with dispatch after transaction commit and row locks for quota reservation. Integration work is ongoing.
       - Recorded models, settings, prompt versions and available token usage on generated artifacts. Added request- and artifact-level Langfuse tracing to investigate quality and latency issues.
-    stack: [LangGraph, A2A, Java 21, Spring Boot 3, Python, FastAPI, Apache Pulsar, PostgreSQL, OpenAI, Gemini, Langfuse, OpenTelemetry]
+    stack: [LangGraph, A2A, Java 21, Spring Boot 3, Python, FastAPI, Event-driven MQ, PostgreSQL, OpenAI, Gemini, Langfuse, OpenTelemetry]
 
   - title: Multi-turn LangGraph Campaign Agent
     kicker: langgraph supervisor · tools · retrieval
@@ -129,7 +131,7 @@ experience:
     period: 2022.01 — present
     summary: Started with ad management and performance reporting for LINE Ads, then expanded into generative AI services and agent backends in the same advertising domain.
     highlights:
-      - "**2026 —** Built the creative agent's A2A server and Pulsar workers, plus ad copy evaluation and regression tests."
+      - "**2026 —** Built the creative agent's A2A server and event-driven generation workers, plus ad copy evaluation and regression tests."
       - "**2025 – 2026 —** Developed campaign-agent retrieval, previews and policy validation, and an MCP tool server."
       - "**2024 – 2026 —** Built the image generation service; extended copy generation, prompt management and credit features."
       - "**2022 – 2025 —** Developed and operated DSP campaign management, Split Test, configuration validation and performance reporting."
@@ -141,7 +143,7 @@ skills:
   - group: Backend
     items: [Java 21, Spring Boot 3, Python, FastAPI, JPA · QueryDSL, MyBatis]
   - group: Data & Messaging
-    items: [Kafka, Apache Pulsar, Kylin, Druid, Airflow, Hive, Spring Batch, MySQL, PostgreSQL, MongoDB, Redis, Elasticsearch]
+    items: [Kafka, Kylin, Druid, Airflow, Hive, Spring Batch, MySQL, PostgreSQL, MongoDB, Redis, Elasticsearch]
   - group: Operations & Quality
     items: [Kubernetes, Kustomize, GitHub Actions, Docker, OpenTelemetry, Sentry, Prometheus, TDD]
   - group: Advertising
@@ -179,9 +181,9 @@ ui:
   campaign_graph_caption: Campaign planning → generation → review · concept
   graph_pause: Pause
   graph_play: Auto-play
-  graph_title: Asynchronous creative-agent request flow
-  graph_desc: A LangGraph conversational client requests creative generation from the A2A server. The server stores the task and dispatches work through Pulsar. Worker result events update tasks and artifacts, which are returned to the client through SSE or status polling.
-  graph_caption: creative request → async processing → results · simplified
+  graph_title: Event-driven creative generation in Kafka terms
+  graph_desc: An MQ workflow expressed through Kafka topic and consumer concepts. The A2A server stores the task and publishes a request event; workers consume requests and publish result events. The server persists results idempotently and returns them through SSE or status polling. Events are keyed by taskId; Kafka ordering applies within a topic partition.
+  graph_caption: request topic → workers → result topic · Kafka concept mapping
   sections_label: Page sections
   portrait_alt: Portrait of Jae Min Cho
   updated: Last updated
