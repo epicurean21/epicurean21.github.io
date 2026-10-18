@@ -88,9 +88,23 @@ p { margin: 0; }
 .topbar a:hover { color: var(--green-ink); }
 .mark { color: var(--ink) !important; font-weight: 500; }
 .mark span { color: var(--ink-3); }
-.topnav, .social { display: flex; gap: 1.25rem; }
+.topnav, .social { display: flex; align-items: center; gap: 1.25rem; }
 .topnav { margin-right: auto; }
-.social a::before { content: "↗ "; color: var(--green); }
+.social > a::before { content: "↗ "; color: var(--green); }
+.email-contact { position: relative; }
+.email-contact summary { color: var(--ink-2); cursor: pointer; list-style: none; }
+.email-contact summary::-webkit-details-marker { display: none; }
+.email-contact summary::after { content: " ↓"; color: var(--green-ink); }
+.email-contact[open] summary::after { content: " ↑"; }
+.email-contact summary:hover { color: var(--green-ink); }
+.email-address {
+  position: absolute; top: calc(100% + 0.9rem); right: 0;
+  width: max-content; max-width: calc(100vw - 2.5rem);
+  padding: 0.85rem 1rem;
+  background: var(--card); border: 1px solid var(--rule); border-radius: 10px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
+  user-select: text;
+}
 
 /* ---------- layout ---------- */
 main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 var(--pad); }

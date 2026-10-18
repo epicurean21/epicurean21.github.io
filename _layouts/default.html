@@ -35,7 +35,10 @@
     <div class="social">
       <a href="https://github.com/{{ site.github_username }}" rel="me">GitHub</a>
       <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" rel="me">LinkedIn</a>
-      <a href="mailto:{{ site.email }}">Email</a>
+      <details class="email-contact">
+        <summary>Email</summary>
+        <a class="email-address" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      </details>
     </div>
     <nav class="lang" aria-label="{{ ui.lang_label }}">
       <a href="{{ '/' | relative_url }}" hreflang="en" lang="en"{% if lang == 'en' %} aria-current="page"{% endif %}>EN</a>
