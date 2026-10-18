@@ -8,6 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
+  <script src="{{ '/assets/theme.js' | relative_url }}"></script>
   <link rel="icon" href="{{ site.favicon | relative_url }}">
   <link rel="alternate" hreflang="en" href="{{ '/' | absolute_url }}">
   <link rel="alternate" hreflang="ko" href="{{ '/ko/' | absolute_url }}">
@@ -248,5 +249,21 @@
     <span>{{ p.first_name }} {{ p.last_name }} · {{ p.alias }} · {{ site.email }}</span>
     <span>{{ ui.updated }} {{ site.time | date: "%Y.%m" }}</span>
   </footer>
+
+  <details class="theme-picker" aria-label="{{ ui.theme_label }}" hidden>
+    <summary>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" stroke="none"/>
+      </svg>
+      <span data-theme-label>{{ ui.theme_system }}</span>
+    </summary>
+    <fieldset class="theme-options">
+      <legend>{{ ui.theme_label }}</legend>
+      <label><input type="radio" name="theme" value="system" checked> {{ ui.theme_system }}</label>
+      <label><input type="radio" name="theme" value="light"> {{ ui.theme_light }}</label>
+      <label><input type="radio" name="theme" value="dark"> {{ ui.theme_dark }}</label>
+    </fieldset>
+  </details>
 </body>
 </html>

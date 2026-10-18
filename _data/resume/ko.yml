@@ -186,3 +186,7 @@ ui:
   portrait_alt: 조재민 프로필 사진
   updated: 최종 업데이트
   lang_label: 언어
+  theme_label: 화면 테마
+  theme_system: 시스템
+  theme_light: 밝게
+  theme_dark: 어둡게

@@ -186,3 +186,7 @@ ui:
   portrait_alt: Portrait of Jae Min Cho
   updated: Last updated
   lang_label: Language
+  theme_label: Appearance
+  theme_system: System
+  theme_light: Light
+  theme_dark: Dark
