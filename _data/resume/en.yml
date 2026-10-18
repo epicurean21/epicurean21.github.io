@@ -1,0 +1,182 @@
+# All resume content. Markdown (**bold**, `code`) works in summary and highlights.
+# Keep internal codenames, hosts, ticket keys and unreleased numbers off this page — it is public.
+
+profile:
+  handle: jaemin.cho
+  first_name: Jae Min
+  last_name: Cho
+  alias: 조재민
+  photo: images/profile.jpg
+  status: Building ad agents at LINE+
+  role: Backend Engineer · Ad Platforms & AI Agents
+  summary: |
+    Backend engineer working on **LINE's advertising platform (DSP) since 2022**, from campaign, ad group and ad management to performance reporting. I have built on that domain experience to develop **generative AI creative services and multi-turn agents**.
+
+    I now focus on the creative agent's A2A server and asynchronous generation workers. My work connects AI features to ad products through campaign validation, generation state management, credit controls and quality evaluation.
+  facts:
+    - label: since
+      value: 2022 · LINE+
+    - label: building
+      value: Ad creative agents
+    - label: stack
+      value: Java · Python
+    - label: domain
+      value: DSP · Generative AI
+
+focus:
+  - kicker: agentic pipelines
+    title: Multi-turn campaign and creative agents
+    text: Developed retrieval, previews and policy validation for a LangGraph campaign agent. For the creative agent, I own the A2A server and generation workers, supporting edits based on earlier results and tracking multiple outputs within a conversation.
+  - kicker: generative creative
+    title: Generative AI for ad creatives
+    text: Integrate ad copy and image generation into advertising products. My work spans a new image outpainting service, landing-page brand extraction, multi-layout generation and credit management.
+  - kicker: ad-tech core
+    title: Ad domain and performance reporting
+    text: Developed Split Test campaigns, automatic targeting, and bid and budget validation in LINE Ads Manager. Improved concurrency controls and Kylin queries in the Kafka-based reporting pipeline, and extended ROAS and conversion-value metrics.
+  - kicker: evaluation & reliability
+    title: Quality evaluation and reliability
+    text: Combine rule checks with LLM-as-a-Judge for ad copy, separating test pass/fail decisions from qualitative assessment. Handle duplicate results and partial failures in asynchronous generation, with tracing to investigate operational issues.
+
+domain:
+  intro: My work covers the campaign → ad group → ad hierarchy and the copy and image assets attached to ads. I apply that experience to validating agent-proposed settings and generating creatives.
+  levels:
+    - name: Campaign
+      attrs: [objective, budget, CBO, schedule, Split Test]
+      built: Co-developed experiment campaigns and validated campaign budget optimization (CBO) settings. Improved agent previews by building campaign settings from extracted metadata.
+    - name: Ad Group
+      attrs: [targeting, audience, automatic targeting, bid type, placement]
+      built: Developed automatic targeting and validation of bid and budget combinations. Worked on country- and account-specific age and gender settings in the campaign agent.
+    - name: Ad
+      attrs: [format, creative assets, bulk upload, status management]
+      built: Improved ad management APIs and bulk upload, and kept related data consistent when experiment ads changed status or were deleted.
+    - name: Creative
+      attrs: [ad copy, image, edit · resize, variations, copy evaluation]
+      built: Developed copy and image generation grounded in brand information. Use copy evaluation and generation records to review model and prompt changes.
+
+projects:
+  - title: Multi-turn Creative Agent — A2A Server & Workers
+    kicker: a2a · event-driven · genai
+    period: 2026.03 — present
+    ongoing: true
+    summary: A platform that generates ad copy and images for a LangGraph conversational client. I primarily own the A2A server and asynchronous workers, and am extending the platform with job APIs for an external campaign agent.
+    flow: [A2A request, Pulsar, generation workers, result storage, SSE · polling]
+    highlights:
+      - Built the **A2A (Agent-to-Agent) server** with Java 21 and Spring Boot 3, including JSON-RPC, SSE, an Agent Card and PostgreSQL task/artifact storage. Supported multiple outputs per request and references to earlier images in follow-up requests.
+      - Moved long-running image generation to **asynchronous Pulsar workers**. Bounded concurrency, persisted duplicate results idempotently, and tracked success or failure per artifact so partial failures retain successful outputs.
+      - Implemented image generation, reference-based generation, editing, resizing and variations for A/B comparison with OpenAI and Gemini. Injected brand information into prompts and specified the language of in-image copy for each target market.
+      - Added a **credit check that blocks generation when credit cannot be verified** to the LangGraph conversation flow, and aligned infrastructure, model and policy error categories between the server and workers.
+      - Implemented **job-based REST APIs and per-feature quotas** for an external campaign agent. Reused the existing generation path with dispatch after transaction commit and row locks for quota reservation. Integration work is ongoing.
+      - Recorded models, settings, prompt versions and available token usage on generated artifacts. Added request- and artifact-level Langfuse tracing to investigate quality and latency issues.
+    stack: [LangGraph, A2A, Java 21, Spring Boot 3, Python, FastAPI, Apache Pulsar, PostgreSQL, OpenAI, Gemini, Langfuse, OpenTelemetry]
+
+  - title: Multi-turn LangGraph Campaign Agent
+    kicker: langgraph supervisor · tools · retrieval
+    period: 2025 — 2026
+    summary: A team project that gathers advertiser requirements through conversation and presents campaign and ad group drafts. I contributed retrieval, previews and domain-policy validation, and built an MCP server exposing ad management and creative APIs.
+    flow: [conversation, extract settings, policy validation, campaign · ad group preview]
+    highlights:
+      - Built a **RAG pipeline** that chunks and embeds ad manuals and FAQs for OpenSearch retrieval, with an index router and a helper that uses the retrieved documents.
+      - Replaced a separate helper agent with a **tool the supervisor invokes when needed**, and moved conversation summarization and settings extraction into an asynchronous workflow.
+      - "**Removed the LLM call from campaign preview generation**, building settings directly from extracted metadata. Also made ad group previews explicitly use the extracted age and gender targeting values."
+      - Improved age validation for country and account policies and checks for allowed campaign objectives. Managed domain rules separately from Jinja2 prompt templates.
+      - Built a **FastMCP tool server** exposing campaign, ad group and ad retrieval/creation, creative generation and landing-page analysis, with retry and error handling.
+    stack: [LangGraph, LangChain, MCP, RAG, OpenSearch, FastAPI, MongoDB, OpenAI]
+
+  - title: Generative AI Ad Creative Backend
+    kicker: genai services
+    period: 2024 — 2026
+    summary: A copy and image generation backend for LINE Ads and other LY Corporation ad products. I built the image outpainting service from scratch and extended copy generation, prompt management and credit features.
+    flow: [image request, Kafka, model call, result storage, status polling]
+    highlights:
+      - Built an **outpainting service for multiple ad aspect ratios** with Java 21, Spring Boot 3 and Vertex AI. Implemented asynchronous Kafka processing, event publication after transaction commit, and per-ratio result and request-status tracking.
+      - Developed **landing-page brand extraction**, returning empty values for unsupported facts and accepting industry classifications only when they match an allowed list.
+      - Implemented parallel multi-layout generation and Gemini-based inpainting, and integrated external image quality assessment and smart cropping.
+      - Profiled each stage of crawled-image processing, then added image-size limits, removed redundant downloads and applied upload timeouts.
+      - Extended ad copy generation and **prompt version management APIs**. Built daily Airflow/Hive tables for comparing the performance of AI-generated and other ad copy.
+      - Developed credit consumption, weekly grants and per-feature credit types, with locks for concurrent account creation and grants. Improved request metrics, OpenTelemetry/Sentry tracing and Kubernetes deployment configuration.
+    stack: [Java 21, Spring Boot 3, Kafka, Redis, MySQL, Python, FastAPI, OpenAI, Gemini, Vertex AI, Airflow, Hive, Kubernetes]
+
+  - title: Ad Copy Quality Evaluation & Regression Testing
+    kicker: evaluation · llm-as-a-judge
+    period: "2026"
+    summary: An evaluation service and integration tests for reviewing model and prompt changes to AI-generated ad copy for Taiwan and Thailand. Records both rule checks and qualitative LLM assessments.
+    flow: [evaluation cases, copy generation, rules · LLM assessment, report]
+    highlights:
+      - Built code-based checks for **missing required text, per-field character limits, allowed emoji and regional character/expression rules**.
+      - Configured an LLM to assess grammar, writing conventions and potential third-party rights issues, and to score clarity, persuasiveness, creativity, target relevance and set coherence on a **five-point scale**.
+      - Built integration tests that call the generation API in parallel using cases from a configuration repository. **Test pass/fail is based on rule checks**; LLM assessments are recorded for review.
+      - Produced Markdown/JSON reports and CI summaries to compare model and prompt changes by market.
+    stack: [LLM-as-a-Judge, Python, FastAPI, OpenAI, Java 21, JUnit 5, GitHub Actions, Docker]
+
+  - title: LINE Ads Manager — DSP Core & Reporting
+    kicker: dsp core · data pipeline
+    period: 2022 — 2025
+    summary: Developed and operated campaign management and performance reporting for LINE Ads in Japan, Taiwan and Thailand. My work covered experiment campaigns, configuration validation and asynchronous reporting reliability.
+    flow: [report request, Kafka, MySQL · Kylin queries, CSV · GZIP, object storage]
+    highlights:
+      - "**Co-developed Split Test campaign structures** for comparing creatives, targeting and bid strategies. Implemented experiment-specific constraints, related ad-status synchronization and conversion to regular campaigns."
+      - Improved automatic targeting and **CBO, bid and budget validation**, rejecting invalid settings across the management console, bulk upload and external APIs.
+      - Extended and stabilized the existing **Kafka-based asynchronous reporting pipeline**. Tuned consumer and job concurrency, and improved multi-account CSV generation, compression and upload paths.
+      - Extended **return on ad spend (ROAS) and conversion-value** metrics and breakdowns by carousel slot and app bundle, fixing related aggregation and calculation errors.
+      - Introduced query priorities and timeouts by user type and migrated Kylin queries to a new cluster. Tracked operations through request, success and failure metrics and execution records.
+    stack: [Java, Spring Boot, JPA, QueryDSL, MyBatis, MySQL, Kafka, Kylin, Druid, Spring Batch, Prometheus]
+
+experience:
+  - company: LINE Plus (LINE+)
+    logo: images/line_logo.png
+    link: https://linepluscorp.com/
+    role: Software Engineer, LINE Ads Platform
+    period: 2022.01 — present
+    summary: Started with ad management and performance reporting for LINE Ads, then expanded into generative AI services and agent backends in the same advertising domain.
+    highlights:
+      - "**2026 —** Built the creative agent's A2A server and Pulsar workers, plus ad copy evaluation and regression tests."
+      - "**2025 – 2026 —** Developed campaign-agent retrieval, previews and policy validation, and an MCP tool server."
+      - "**2024 – 2026 —** Built the image generation service; extended copy generation, prompt management and credit features."
+      - "**2022 – 2025 —** Developed and operated DSP campaign management, Split Test, configuration validation and performance reporting."
+      - Ran recurring study sessions to support learning and knowledge sharing within the team.
+
+skills:
+  - group: AI / LLM
+    items: [LangGraph, LangChain, A2A, MCP, RAG, OpenSearch vector search, LLM-as-a-Judge, Langfuse, OpenAI, Gemini, Vertex AI, AWS Bedrock]
+  - group: Backend
+    items: [Java 21, Spring Boot 3, Python, FastAPI, JPA · QueryDSL, MyBatis]
+  - group: Data & Messaging
+    items: [Kafka, Apache Pulsar, Kylin, Druid, Airflow, Hive, Spring Batch, MySQL, PostgreSQL, MongoDB, Redis, Elasticsearch]
+  - group: Operations & Quality
+    items: [Kubernetes, Kustomize, GitHub Actions, Docker, OpenTelemetry, Sentry, Prometheus, TDD]
+  - group: Advertising
+    items: [campaign structure, Split Test, targeting, bid · budget validation, CBO, ad creatives, ROAS reporting]
+
+education:
+  - school: Inha University
+    degree: B.Sc. in Computer Science
+    period: 2016 — 2022
+    description: Studied computer science, earning strong grades in data structures, databases, networks and algorithms. Founded a university algorithm club where members studied problem-solving techniques together.
+    activities: [Algorithm Club · Founder (2020 – 2021), Soccer Club (2019 – 2022), Volunteer Club (2016 – 2017)]
+
+# Interface strings (section titles may contain <em>…</em> for the green accent).
+ui:
+  nav:
+    focus: Focus
+    domain: Domain
+    projects: Projects
+    experience: Experience
+    skills: Skills
+  sections:
+    focus: What I <em>build</em>
+    domain: Ad domain, <em>end to end</em>
+    projects: Selected <em>projects</em>
+    experience: <em>Experience</em>
+    skills: Skills &amp; <em>education</em>
+  level: area
+  running: in progress
+  skip: Skip to content
+  stages_label: Main processing flow
+  stack_label: Tech stack
+  graph_title: Asynchronous creative-agent request flow
+  graph_desc: A LangGraph conversational client requests creative generation from the A2A server. The server stores the task and dispatches work through Pulsar. Worker result events update tasks and artifacts, which are returned to the client through SSE or status polling.
+  graph_caption: creative request → async processing → results · simplified
+  sections_label: Page sections
+  portrait_alt: Portrait of Jae Min Cho
+  updated: Last updated
+  lang_label: Language

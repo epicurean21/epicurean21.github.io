@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+{%- assign lang = page.lang | default: 'en' -%}
+{%- assign r = site.data.resume[lang] -%}
+{%- assign p = r.profile -%}
+{%- assign ui = r.ui -%}
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="{{ site.favicon | relative_url }}">
+  <link rel="alternate" hreflang="en" href="{{ '/' | absolute_url }}">
+  <link rel="alternate" hreflang="ko" href="{{ '/ko/' | absolute_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ '/' | absolute_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500{% if lang == 'ko' %}&family=Gowun+Batang:wght@400;700{% endif %}&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+  {% seo %}
+</head>
+<body>
+  <a class="skip" href="#main">{{ ui.skip }}</a>
+
+  <header class="topbar">
+    <a class="mark" href="#top">{{ p.handle }}<span>/resume</span></a>
+    <nav class="topnav" aria-label="{{ ui.sections_label }}">
+      <a href="#focus">{{ ui.nav.focus }}</a>
+      <a href="#domain">{{ ui.nav.domain }}</a>
+      <a href="#projects">{{ ui.nav.projects }}</a>
+      <a href="#experience">{{ ui.nav.experience }}</a>
+      <a href="#skills">{{ ui.nav.skills }}</a>
+    </nav>
+    <div class="social">
+      <a href="https://github.com/{{ site.github_username }}" rel="me">GitHub</a>
+      <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" rel="me">LinkedIn</a>
+      <a href="mailto:{{ site.email }}">Email</a>
+    </div>
+    <nav class="lang" aria-label="{{ ui.lang_label }}">
+      <a href="{{ '/' | relative_url }}" hreflang="en" lang="en"{% if lang == 'en' %} aria-current="page"{% endif %}>EN</a>
+      <a href="{{ '/ko/' | relative_url }}" hreflang="ko" lang="ko"{% if lang == 'ko' %} aria-current="page"{% endif %}>KO</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-text">
+        <div class="who reveal" style="--i:0">
+          <img class="avatar" src="{{ p.photo | relative_url }}" alt="{{ ui.portrait_alt }}" width="72" height="72">
+          <p class="status mono"><span class="pulse" aria-hidden="true"></span>{{ p.status }}</p>
+          <p class="alias mono" lang="ko">{{ p.alias }}</p>
+        </div>
+        <h1 class="name reveal" style="--i:1">{{ p.first_name }} <em>{{ p.last_name }}</em></h1>
+        <p class="role reveal" style="--i:2">{{ p.role }}</p>
+        <div class="lede reveal" style="--i:3">{{ p.summary | markdownify }}</div>
+        <dl class="facts reveal" style="--i:4">
+          {%- for f in p.facts %}
+          <div><dt class="mono">{{ f.label }}</dt><dd>{{ f.value }}</dd></div>
+          {%- endfor %}
+        </dl>
+      </div>
+
+      <figure class="graph reveal" style="--i:3">
+        <div class="graph-bar mono" aria-hidden="true"><i></i><i></i><i></i><span>creative generation</span></div>
+        <svg viewBox="0 0 320 400" role="img" aria-labelledby="g-title g-desc">
+          <title id="g-title">{{ ui.graph_title }}</title>
+          <desc id="g-desc">{{ ui.graph_desc }}</desc>
+          <defs>
+            <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L8 4 L0 8 z" class="arrowhead"/>
+            </marker>
+          </defs>
+          <g class="edges" marker-end="url(#arrow)">
+            <path d="M160 44 V70"/>
+            <path d="M160 100 V126"/>
+            <path d="M160 156 V182"/>
+            <path d="M160 212 V238"/>
+            <path d="M160 268 V294"/>
+            <path d="M160 324 V350"/>
+          </g>
+          <g class="nodes">
+            <g class="node term" style="--d:0"><rect x="70" y="14" width="180" height="30" rx="8"/><text x="160" y="32.5">LangGraph chat</text></g>
+            <g class="node" style="--d:1"><rect x="70" y="70" width="180" height="30" rx="8"/><text x="160" y="88.5">A2A server</text></g>
+            <g class="node" style="--d:2"><rect x="70" y="126" width="180" height="30" rx="8"/><text x="160" y="144.5">Pulsar request</text></g>
+            <g class="node" style="--d:3"><rect x="70" y="182" width="180" height="30" rx="8"/><text x="160" y="200.5">generation worker</text></g>
+            <g class="node" style="--d:4"><rect x="70" y="238" width="180" height="30" rx="8"/><text x="160" y="256.5">Pulsar result</text></g>
+            <g class="node" style="--d:5"><rect x="70" y="294" width="180" height="30" rx="8"/><text x="160" y="312.5">task + artifacts</text></g>
+            <g class="node term" style="--d:6"><rect x="70" y="350" width="180" height="30" rx="8"/><text x="160" y="368.5">SSE / polling</text></g>
+          </g>
+        </svg>
+        <figcaption class="mono">{{ ui.graph_caption | escape }}</figcaption>
+      </figure>
+    </section>
+
+    <section class="section" id="focus">
+      <header class="sec-head"><span class="sec-no mono">01</span><h2>{{ ui.sections.focus }}</h2></header>
+      <div class="focus-grid">
+        {%- for f in r.focus %}
+        <article class="card focus">
+          <p class="mono kicker">{{ f.kicker }}</p>
+          <h3>{{ f.title }}</h3>
+          {{ f.text | markdownify }}
+        </article>
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section class="section" id="domain">
+      <header class="sec-head"><span class="sec-no mono">02</span><h2>{{ ui.sections.domain }}</h2></header>
+      <p class="sec-intro">{{ r.domain.intro }}</p>
+      <ol class="domain">
+        {%- for d in r.domain.levels %}
+        <li class="card level">
+          <p class="mono kicker">{{ ui.level }} {{ forloop.index }}</p>
+          <h3>{{ d.name }}</h3>
+          <ul class="attrs">{% for a in d.attrs %}<li>{{ a }}</li>{% endfor %}</ul>
+          <p class="built">{{ d.built }}</p>
+        </li>
+        {%- endfor %}
+      </ol>
+    </section>
+
+    <section class="section" id="projects">
+      <header class="sec-head"><span class="sec-no mono">03</span><h2>{{ ui.sections.projects }}</h2></header>
+      <div class="projects">
+        {%- for pr in r.projects %}
+        <article class="project">
+          <div class="when mono">
+            <span>{{ pr.period }}</span>
+            {%- if pr.ongoing %}<span class="live"><span class="pulse" aria-hidden="true"></span>{{ ui.running }}</span>{% endif %}
+          </div>
+          <div class="card body">
+            <p class="mono kicker">{{ pr.kicker }}</p>
+            <h3>{{ pr.title }}</h3>
+            <p class="summary">{{ pr.summary }}</p>
+            {%- if pr.flow %}
+            <ol class="flow mono" aria-label="{{ ui.stages_label }}">
+              {%- for s in pr.flow %}<li>{{ s }}</li>{% endfor %}
+            </ol>
+            {%- endif %}
+            <ul class="highlights">
+              {%- for h in pr.highlights %}
+              <li>{{ h | markdownify | remove: '<p>' | remove: '</p>' | strip }}</li>
+              {%- endfor %}
+            </ul>
+            <ul class="chips mono" aria-label="{{ ui.stack_label }}">{% for t in pr.stack %}<li>{{ t }}</li>{% endfor %}</ul>
+          </div>
+        </article>
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <header class="sec-head"><span class="sec-no mono">04</span><h2>{{ ui.sections.experience }}</h2></header>
+      {%- for e in r.experience %}
+      <article class="card job">
+        <div class="job-head">
+          <img src="{{ e.logo | relative_url }}" alt="" width="44" height="44">
+          <div>
+            <h3><a href="{{ e.link }}">{{ e.company }}</a></h3>
+            <p class="mono kicker">{{ e.role }} · {{ e.period }}</p>
+          </div>
+        </div>
+        <p class="summary">{{ e.summary }}</p>
+        <ul class="highlights">
+          {%- for h in e.highlights %}
+          <li>{{ h | markdownify | remove: '<p>' | remove: '</p>' | strip }}</li>
+          {%- endfor %}
+        </ul>
+      </article>
+      {%- endfor %}
+    </section>
+
+    <section class="section" id="skills">
+      <header class="sec-head"><span class="sec-no mono">05</span><h2>{{ ui.sections.skills }}</h2></header>
+      <div class="skills">
+        {%- for g in r.skills %}
+        <div class="skill-group">
+          <h3 class="mono kicker">{{ g.group }}</h3>
+          <ul class="chips mono">{% for s in g.items %}<li>{{ s }}</li>{% endfor %}</ul>
+        </div>
+        {%- endfor %}
+      </div>
+      {%- for ed in r.education %}
+      <article class="card edu">
+        <div class="job-head">
+          <div>
+            <h3>{{ ed.school }}</h3>
+            <p class="mono kicker">{{ ed.degree }} · {{ ed.period }}</p>
+          </div>
+        </div>
+        <p class="summary">{{ ed.description }}</p>
+        <ul class="chips mono">{% for a in ed.activities %}<li>{{ a }}</li>{% endfor %}</ul>
+      </article>
+      {%- endfor %}
+    </section>
+  </main>
+
+  <footer class="footer mono">
+    <span>{{ p.first_name }} {{ p.last_name }} · {{ p.alias }} · {{ site.email }}</span>
+    <span>{{ ui.updated }} {{ site.time | date: "%Y.%m" }}</span>
+  </footer>
+</body>
+</html>

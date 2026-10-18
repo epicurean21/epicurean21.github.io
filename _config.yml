@@ -1,198 +1,26 @@
 # Site
+title: Jae Min Cho
+tagline: Backend Engineer · Ad Platforms & AI Agents
+description: Backend engineer at LINE since 2022, working on DSP campaign management, generative AI creatives, and multi-turn agent backends.
+url: https://epicurean21.github.io
 repository: epicurean21/epicurean21.github.io
 favicon: images/favicon.ico
+lang: en
 
-# Content configuration version
-version: 2
-
-# Personal info
-name: Jae Min Cho
-title: Junior Software Engineer
+# Contact (resume content lives in _data/resume/en.yml and ko.yml)
 email: 14jaeminc@gmail.com
-website: www.github.com/epicurean21
-
-# Dark Mode (true/false/never)
-darkmode: false
-
-# Social links
-github_username:  epicurean21
-# stackoverflow_username: "00000001"
-# dribbble_username: jekyll
-# facebook_username: jekyll
-# flickr_username: jekyll
-# instagram_username: jameswgrant
+github_username: epicurean21
 linkedin_username: jae-min-cho
-# xing_username: jekyll
-# pinterest_username: jekyll
-# youtube_username: globalmtb
-# googleplus_username: +jekyll
-# orcid_username: 0000-0000-0000-0000
 
-# Additional icon links
-# additional_links:
-# - title: itsgoingto.be
-#   icon: fas fa-globe
-#   url: https://www.itsgoingto.be
-# - title: another link
-#   icon: font awesome brand icon name (eg. fab fa-twitter) (https://fontawesome.com/icons?d=gallery&m=free)
-#   url: Link url (eg. https://google.com)
-
-# Google Analytics and Tag Manager
-# Using more than one of these may cause issues with reporting
-# gtm: "GTM-0000000"
-# gtag: "UA-00000000-0"
-# google_analytics: "UA-00000000-0"
-
-# About Section
-# about_title: About Me
-about_profile_image: images/profile.jpg
-about_content: | # this will include new lines to allow paragraphs
-  I am a backend developer with 4 years of experience in designing and implementing large-scale distributed systems, primarily using Java and Spring. 
-  
-  Currently, I work on the advertising system development team at LINE, the leading messenger app in Japan, Taiwan, and Thailand, where we handle billions of data points daily. I have a deep interest in the advertising domain and continuously strive to design system architectures that provide the best user experience.
-
-  I am always on the lookout for better solutions and contribute to enhancing the performance and stability of the advertising platform. With this experience, I am committed to developing innovative, user-centric systems in the future.
-
-content:
-  - title: Experience
-    layout: list
-    content:
-      - layout: left
-        title: 'LINE+ <img src="images/line_logo.png" alt="LINE" style="height: 1.2em; vertical-align: middle; margin-left: 0.3em;">'
-        link: https://linepluscorp.com/
-        # link_text: boringcompany.com
-        sub_title: LINE Ads Platform Developer
-        caption: January 2022 - Present
-        quote: >
-          A global advertising platform targeting 200 million LINE users worldwide, including Japan, Thailand, and Taiwan.
-        description: | # this will include new lines to allow paragraphs
-          Developed and maintained a large-scale distributed system for the advertising platform (DSP).
-
-          **Achievements**
-          - Developed systems for managing key advertising domain components such as ad creatives and ad groups (Campaigns), and for delivering ads.
-          - Efficiently managed and aggregated large volumes of data generated from ad events to provide advertisers with performance metrics.
-          - Consistently performed at a top level within the team for project refactoring and error ticket resolution.
-          - Fostered a culture of growth and collaboration by conducting multiple study sessions based on Agile methodologies.
-
-  - title: Projects # Title for the section
-    layout: list # Type of content section (list/text)
-    content:
-      - layout: left
-        title: AI-Driven Ad Campaign Automation System
-        description: | # this will include new lines to allow paragraphs
-          A comprehensive AI-driven system that automates the entire ad campaign creation process using LangGraph (LangChain) agents.
-
-          `2025.05` ~ `ing`
-
-          - Designed and implemented an intelligent agent-based architecture using Python LangGraph (LangChain) for automated ad campaign generation
-          - Developed a multi-agent system that generates complete ad campaigns, including targeting strategies and creative assets, from minimal input (brand name, LP URL, budget)
-          - Architected an end-to-end solution that autonomously creates optimized advertising campaigns with proper targeting configurations
-          - Integrated AI capabilities to intelligently analyze business requirements and generate contextually relevant advertising materials
-          - Built orchestration logic to coordinate multiple AI agents for campaign planning, audience targeting, and creative generation
-          
-          skill keywords: `LangChain`, `AI Agent`, `Architecture`, `Campaign Automation`
-
-      - layout: left
-        title: Generative AI Ad Creative
-        description: | # this will include new lines to allow paragraphs
-          A project to automatically generate high-performing ad images and text using generative AI capabilities.
-
-          `2024.01` ~ `ing`
-
-          - Led the development and operation of both backend and frontend for the AI-powered ad creative generation system
-          - Implemented automated generation of ad creatives (images and text) using advanced AI models
-          - Designed a fast and scalable service using Python FastAPI to meet high-performance requirements
-          - Established a CI/CD pipeline for seamless system deployment and performance testing
-          - Built a data ingestion pipeline for KPI metric measurement and creative performance analysis
-          - Conducted research and various tests to optimize AI-generated creative quality and effectiveness
-          
-          skill keywords: `Python`, `FastAPI`, `OpenAI`, `Generative AI`, `Architecture`
-
-      - layout: left
-        title: DSP Ad Management System
-        description: |
-          A comprehensive ad management system that handles the core DSP functionality including campaign management, targeting data, and ad creative delivery.
-          
-          `2022.01` ~ `ing`
-
-          - Developed and maintained the core DSP Admanager system responsible for campaign lifecycle management
-          - Implemented robust data storage and management for ad campaigns and targeting configurations
-          - Built ad creative management system ensuring proper ad serving and delivery
-          - Designed and developed scalable architecture to handle high-volume ad serving requests
-          - Managed the entire ad data pipeline from creation to serving, ensuring data consistency and reliability
-          - Developed RESTful APIs and internal services using Java Spring Boot for seamless integration with ad serving infrastructure
-          
-          skill keywords: `Java`, `Spring Boot`, `Architecture`, `MySQL`, `Ad Campaign Management`, `Ad Serving`, `Distributed Systems`
-
-      - layout: left
-        title: Report Service
-        description: | # this will include new lines to allow paragraphs
-          A large-scale reporting system for the advertising DSP platform that processes massive volumes of ad performance data and delivers actionable insights to advertisers.
-          
-          `2023.03` ~ `ing` 
-
-          - Designed and implemented a high-throughput data pipeline handling over 30 million ad events daily
-          - Built real-time asynchronous processing system to ingest and aggregate large-scale advertising performance data
-          - Utilized Spring Batch and Jenkins to partition and process daily report metrics efficiently
-          - Developed complex aggregation logic and native queries to provide diverse advertising performance metrics
-          - Optimized asynchronous processing tasks to prevent system overload and ensure data accuracy
-          - Performed continuous refactoring for performance optimization and system scalability
-          - Delivered accurate and timely advertising performance reports to advertisers through efficient batch processing
-          
-          skill keywords: `Java`, `Spring Boot`, `Apache Kafka`, `MySQL`, `Spring Batch`, `Jenkins`, `Data Pipeline`, `High-Volume Processing` 
-
-#      OLD PROJECT
-#      - layout: left
-#        title: Split Test (ADs A/B Test)
-#        description: |
-#          A project to implement A/B testing functionality to evaluate optimal ad performance using targeted ads or ad creative diversity.
-#
-#          `2023.09` ~ `2024.03`
-#
-#          - Participated in and implemented the design of a complex new system architecture for the domain
-#          - Developed asynchronous logic processing for feature optimization and flexible API handling in a distributed system
-#
-#          skill keywords: `Java`, `Spring Boot`, `Architecture`, `Apache Kafka`
-
-  - title: Education # Title for the section
-    layout: list # Type of content section (list/text)
-    content:
-      - layout: left
-        title: Inha University
-        caption: 2016 - 2022
-        sub_title: BSc Computer Science & Technology
-        #quote: >
-        #  Established in 1636, Harvard is the oldest higher education institution in the United States, and is widely regarded in terms of its influence, reputation, and academic pedigree as a leading university in not just the US but also the world.
-        description: | # this will include new lines to allow paragraphs
-          I completed my studies in Computer Science with high grades in core subjects such as Data Structures, Databases, Networks, and Algorithms. During my university years, I also founded an algorithm club where we explored various problem-solving techniques.
-
-          **Activities**:
-          - Algorithm Club (2020.02 ~ 2021.12)
-          - Soccer Club (2019.91 ~ 2022.02)
-          - Volunteer Club (2016.03 ~ 2017.04)
-
-  # - title: A Little More About Me
-  #   layout: text
-  #   content: | # this will include new lines to allow paragraphs
-  #     Alongside my interests in networks and software engineering some of my other interests and hobbies are:
-  #     - Rock climbing
-  #     - Gaming
-  #     - Knitting
-  #     - [Becoming a ninja](https://www.youtube.com/watch?v=vtg4o__aRMg)
-
-  #     Look at this cool image  
-  #     ![Trees](./images/landscape-trees.jpg "Trees")
-
-# Footer
-footer_show_references: true
-# references_title: References on request (Override references text)
-
-# Build settings
-remote_theme: sproogen/resume-theme
-
-sass:
-  sass_dir: _sass
-  style: compressed
+author:
+  name: Jae Min Cho
+  email: 14jaeminc@gmail.com
 
 plugins:
- - jekyll-seo-tag
+  - jekyll-seo-tag
+
+exclude:
+  - README.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
