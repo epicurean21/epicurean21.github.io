@@ -40,14 +40,14 @@
     updateRotation();
   });
   carousel.addEventListener('focusin', event => {
-    if (!carousel.contains(event.relatedTarget)) {
+    if (!carousel.contains(event.relatedTarget) && event.target.matches(':focus-visible')) {
       paused = true;
       updateRotation();
     }
   });
   document.addEventListener('visibilitychange', updateRotation);
   motion.addEventListener('change', () => {
-    paused = motion.matches;
+    if (motion.matches) paused = true;
     updateRotation();
   });
 

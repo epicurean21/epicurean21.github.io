@@ -7,7 +7,9 @@ const source = fs.readFileSync(path.join(__dirname, '../assets/diagrams.js'), 'u
 
 function element(properties = {}) {
   return {
-    hidden: false, attributes: {}, handlers: {}, ...properties,
+    hidden: false, focusVisible: false, attributes: {}, handlers: {},
+    matches(selector) { return selector === ':focus-visible' && this.focusVisible; },
+    ...properties,
     setAttribute(key, value) { this.attributes[key] = value; },
     addEventListener(type, handler) { this.handlers[type] = handler; },
     fire(type, event = {}) { this.handlers[type](event); },
@@ -79,7 +81,8 @@ page.carousel.fire('mouseleave');
 page.advance(5000);
 page.expectSlide(1);
 
-page.carousel.fire('focusin', { relatedTarget: null });
+page.buttons[0].focusVisible = true;
+page.carousel.fire('focusin', { relatedTarget: null, target: page.buttons[0] });
 assert.equal(page.rotation.textContent, '자동 전환');
 page.buttons[0].fire('click');
 page.advance(10000);
@@ -113,4 +116,21 @@ reduced.expectSlide(0);
 reduced.motion.fire('change');
 reduced.advance(10000);
 reduced.expectSlide(0);
-console.log('DIAGRAMS OK: five-second cycling, selection, pause/play, hover, focus, hidden tabs and reduced motion');
+
+const manual = setup();
+manual.carousel.fire('mouseenter');
+manual.carousel.fire('focusin', { relatedTarget: null, target: manual.rotation });
+manual.rotation.fire('click');
+assert.equal(manual.rotation.textContent, '자동 전환', 'A pointer click must pause on the first attempt');
+manual.carousel.fire('mouseleave');
+manual.motion.matches = true;
+manual.motion.fire('change');
+manual.motion.matches = false;
+manual.motion.fire('change');
+manual.advance(5000);
+manual.expectSlide(0);
+assert.equal(manual.rotation.textContent, '자동 전환', 'System motion changes must preserve a user pause');
+manual.rotation.fire('click');
+manual.advance(5000);
+manual.expectSlide(1);
+console.log('DIAGRAMS OK: five-second cycling, selection, pause/play, hover, focus, hidden tabs and reduced motion without overriding a user pause');
