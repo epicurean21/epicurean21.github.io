@@ -15,9 +15,10 @@
   --feature-bg: light-dark(#16181a, #213a29);
   --feature-ink: light-dark(#f3f1ea, #e6eee8);
   --amber: #e2a01a;
+  --amber-ink: light-dark(#8b5c00, #efbf58);
   --amber-wash: #e2a01a26;
 
-  --display: "Instrument Serif", "Times New Roman", serif;   /* name + section headings: always Latin */
+  --display: "Instrument Serif", "Times New Roman", serif;   /* Latin display type */
   --serif: "Instrument Serif", "Times New Roman", serif;     /* titles that may be Korean on /ko/ */
   --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -48,7 +49,7 @@ body {
 
 a { color: inherit; text-decoration-color: var(--green); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 a:hover { color: var(--green-ink); }
-:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--green-ink); outline-offset: 3px; border-radius: 4px; }
 
 h1, h2, h3 { margin: 0; font-weight: 400; }
 em { font-style: italic; }
@@ -163,7 +164,7 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
   position: absolute; inset: -4px;
   border-radius: 50%;
   border: 1.5px solid var(--green);
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) 2 forwards;
 }
 
 .name {
@@ -183,12 +184,12 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
 
 .facts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0;
   margin: 2rem 0 0;
   border-top: 1px solid var(--rule);
 }
-.facts div { padding: 0.9rem 1rem 0 0; }
+.facts div { padding: 0.9rem 1rem 0 0; overflow-wrap: anywhere; }
 .facts dt { color: var(--ink-3); }
 .facts dd { margin: 0.15rem 0 0; font-weight: 600; letter-spacing: -0.02em; }
 
@@ -224,7 +225,7 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
 }
 .graph-bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--rule); }
 .graph-bar span { margin-left: 0.6rem; }
-.graph svg { display: block; width: 100%; height: auto; padding: 1.25rem 1.25rem 0.5rem; }
+.graph svg { display: block; width: 100%; height: auto; padding: 0.75rem 0.5rem 0.5rem; }
 .graph figcaption {
   flex: 1;
   padding: 0.7rem 1rem;
@@ -237,17 +238,19 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
   stroke: var(--ink-3);
   stroke-width: 1.25;
   stroke-dasharray: 3 5;
-  animation: flow 1.1s linear infinite;
+  animation: flow 1.1s linear 3;
 }
 .edges path.cond { stroke: var(--amber); }
 .arrowhead { fill: var(--ink-3); }
-.edge-label { font: 9px var(--mono); fill: var(--amber); }
+.edge-label { font: 10px var(--mono); fill: var(--amber-ink); }
 
 .node rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.1; }
-.node text { font: 500 10.5px var(--mono); fill: var(--ink); text-anchor: middle; }
+.node text { font: 500 11.5px var(--mono); fill: var(--ink); text-anchor: middle; }
 .node.term rect { fill: var(--ink); }
-.node.term text { fill: var(--paper); font-size: 9.5px; }
-.node.eval rect { fill: var(--green-wash); stroke: var(--green); }
+.node.term text { fill: var(--paper); font-size: 11px; }
+.node.mine rect, .legend-swatch { fill: var(--green-wash); stroke: var(--green-ink); stroke-width: 1.8; }
+.edge-note { font: 10px var(--mono); fill: var(--ink-3); }
+.legend-text { font: 10px var(--mono); fill: var(--ink-2); }
 .node.hitl rect { fill: var(--amber-wash); stroke: var(--amber); }
 .node { animation: node-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(400ms + var(--d) * 120ms); }
 
@@ -310,16 +313,17 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
   border: 1px solid var(--ink);
   border-radius: 6px;
   background: var(--paper);
-  white-space: nowrap;
+  max-width: calc(100% - 1.25rem);
+  overflow-wrap: anywhere;
 }
 .flow li:not(:last-child)::after {
   content: "→";
   position: absolute;
   right: -1.25rem;
-  color: var(--green);
+  color: var(--green-ink);
 }
 
-.highlights { margin-top: 1.1rem; display: grid; gap: 0.5rem; }
+.highlights { margin-top: 1.1rem; display: grid; gap: 0.8rem; }
 .highlights li { position: relative; padding-left: 1.25rem; font-size: 0.96rem; }
 .highlights li::before {
   content: "";
@@ -426,7 +430,7 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
 
 @media (max-width: 640px) {
   .domain { grid-template-columns: 1fr; }
-  .project { grid-template-columns: 1fr; gap: 0.5rem; }
+  .project { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
   .when { flex-direction: row; gap: 1rem; padding-top: 0; }
   .topbar { gap: 1rem; }
   .mark { display: none; }                 /* links + language toggle are what matter on a phone */
@@ -445,6 +449,10 @@ main { max-width: calc(var(--max) + 2 * var(--pad)); margin: 0 auto; padding: 0 
   .hero { grid-template-columns: 1fr; padding-top: 0; }
   .section { padding-top: 2rem; }
   .card { break-inside: avoid; }
+  .project { display: block; }
+  .project .card { break-inside: auto; }
+  .highlights li { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
   *, *::before, *::after { animation: none !important; }
 }
 
@@ -463,7 +471,8 @@ html[lang="ko"] {
   word-break: keep-all;
   overflow-wrap: break-word;
 }
-html[lang="ko"] h3 em { font-style: normal; }                                        /* Hangul has no italics; the green carries the emphasis */
+html[lang="ko"] .sec-head h2 { font: 400 clamp(1.8rem, 4.5vw, 3rem)/1.25 var(--serif); letter-spacing: -0.045em; }
+html[lang="ko"] h2 em, html[lang="ko"] h3 em { font-style: normal; }                  /* Hangul has no italics; the green carries the emphasis */
 html[lang="ko"] .project h3 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); line-height: 1.3; }
 html[lang="ko"] .level h3 { font-size: 1.5rem; }
 html[lang="ko"] .job-head h3 { font-size: 1.6rem; }

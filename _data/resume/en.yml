@@ -10,14 +10,14 @@ profile:
   status: Building ad agents at LINE+
   role: Backend Engineer · Ad Platforms & AI Agents
   summary: |
-    Backend engineer working on **LINE's advertising platform (DSP) since 2022**, from campaign, ad group and ad management to performance reporting. I have built on that domain experience to develop **generative AI creative services and multi-turn agents**.
+    Backend engineer on **LINE's advertising platform (DSP) since 2022**. I started with campaign management and performance reporting in LINE Ads Manager, then moved into **generative AI creative services and agent backends** for the same ad domain.
 
-    I now focus on the creative agent's A2A server and asynchronous generation workers. My work connects AI features to ad products through campaign validation, generation state management, credit controls and quality evaluation.
+    I now own the backend of a multi-turn creative agent: the A2A server and asynchronous generation workers, both of which I created. Across projects, I make LLM features dependable in ad products through retrieval, ad-domain rules, idempotent result handling, credit controls and automated quality checks.
   facts:
     - label: since
       value: 2022 · LINE+
     - label: building
-      value: Ad creative agents
+      value: Creative agent backend
     - label: stack
       value: Java & Spring Boot · Python & LangGraph
     - label: domain
@@ -26,102 +26,105 @@ profile:
 focus:
   - kicker: agentic pipelines
     title: Multi-turn campaign and creative agents
-    text: Developed retrieval, previews and policy validation for a LangGraph campaign agent. For the creative agent, I own the A2A server and generation workers, supporting edits based on earlier results and tracking multiple outputs within a conversation.
+    text: For the creative agent, I created and own the A2A server and generation workers. Follow-up requests can build on earlier images, with completion and failure tracked per output. For the team's LangGraph campaign agent, I built the retrieval service and search tool, and improved previews and targeting rules.
   - kicker: generative creative
     title: Generative AI for ad creatives
-    text: Integrate ad copy and image generation into advertising products. My work spans a new image outpainting service, landing-page brand extraction, multi-layout generation and credit management.
+    text: I bring ad copy and image generation into LINE Ads and other LY Corporation ad products. I built the image generation service from scratch, starting with outpainting, rebuilt landing-page brand extraction, and added inpainting, crawled-image processing and credit controls.
   - kicker: ad-tech core
     title: Ad domain and performance reporting
-    text: Developed Split Test campaigns, automatic targeting, and bid and budget validation in LINE Ads Manager. Improved concurrency controls and Kylin queries in the Kafka-based reporting pipeline, and extended ROAS and conversion-value metrics.
+    text: In LINE Ads Manager, I co-developed A/B test campaigns and built validation for automatic targeting, campaign budget optimization (CBO), bids and budgets. On the reporting side, I built a Kafka-based report export, introduced return on ad spend (ROAS) and purchase-value metrics and migrated Kylin queries to a new cluster.
   - kicker: evaluation & reliability
     title: Quality evaluation and reliability
-    text: Combine rule checks with LLM-as-a-Judge for ad copy, separating test pass/fail decisions from qualitative assessment. Handle duplicate results and partial failures in asynchronous generation, with tracing to investigate operational issues.
+    text: I check generated ad copy with rule-based pass/fail tests and record LLM-as-a-Judge scores for review; the regression suite runs after deployments to configured test environments. In asynchronous generation, I design for redelivery, duplicates and partial failures, with request and output identifiers for tracing.
 
 domain:
-  intro: My work covers the campaign → ad group → ad hierarchy and the copy and image assets attached to ads. I apply that experience to validating agent-proposed settings and generating creatives.
+  intro: My work covers the campaign → ad group → ad hierarchy and the copy and image creatives attached to ads. I apply the same rules to the settings that agents propose and the creatives they generate.
   levels:
     - name: Campaign
-      attrs: [objective, budget, CBO, schedule, Split Test]
-      built: Co-developed experiment campaigns and validated campaign budget optimization (CBO) settings. Improved agent previews by building campaign settings from extracted metadata.
+      attrs: [objective, budget, CBO, schedule, A/B test]
+      built: Co-developed A/B test campaigns and added CBO validation. In the campaign agent, built campaign previews directly from extracted settings instead of an LLM call.
     - name: Ad Group
       attrs: [targeting, audience, automatic targeting, bid type, placement]
-      built: Developed automatic targeting and validation of bid and budget combinations. Worked on country- and account-specific age and gender settings in the campaign agent.
+      built: Implemented automatic-targeting validation and rollout across supported markets, bid and budget checks, and age-targeting rules for Thailand's Personal Data Protection Act (PDPA). Encoded country- and account-level age rules for the campaign agent.
     - name: Ad
       attrs: [format, creative assets, bulk upload, status management]
-      built: Improved ad management APIs and bulk upload, and kept related data consistent when experiment ads changed status or were deleted.
+      built: Improved ad management APIs and bulk upload, and kept related ads consistent when A/B test ads were paused or deleted.
     - name: Creative
       attrs: [ad copy, image, edit · resize, variations, copy evaluation]
-      built: Developed copy and image generation grounded in brand information. Use copy evaluation and generation records to review model and prompt changes.
+      built: Built copy and image generation grounded in brand information, recorded generation metadata with outputs, and checked copy changes with rule tests and LLM scoring.
 
 projects:
   - title: Multi-turn Creative Agent — A2A Server & Workers
     kicker: a2a · event-driven · genai
     period: 2026.03 — present
     ongoing: true
-    summary: An event-driven platform that uses Kafka to generate ad copy and images for a LangGraph conversational client. I primarily own the A2A server and asynchronous workers, and am extending the platform with job APIs for an external campaign agent.
+    summary: An agent platform that generates ad copy and images for a LangGraph conversational client over A2A, with Kafka-based asynchronous workers. I built the A2A server and generation workers, including task management, result persistence and automated tests.
     flow: [A2A request, Kafka request topic, generation workers, Kafka result topic, result storage, SSE · polling]
     highlights:
-      - Built the **A2A (Agent-to-Agent) server** with Java 21 and Spring Boot 3, including JSON-RPC, SSE, an Agent Card and PostgreSQL task/artifact storage. Supported multiple outputs per request and references to earlier images in follow-up requests.
-      - Moved long-running image generation to **Kafka-based asynchronous workers**, with separate request and result topics. Bounded in-flight work and tracked per-artifact outcomes so partial failures retain successful outputs.
-      - Designed for **Kafka's at-least-once consumption model**, with bounded retries and a dead-letter queue (DLQ). Used **(taskId, artifactId) uniqueness and conditional task-state updates** to make result persistence and finalization idempotent under redelivery.
-      - Used **taskId as the partition key** to route each task's events to the same partition within a topic and consume results in partition order.
-      - Integrated generative models for image generation, reference-based generation, editing, resizing and variations for A/B comparison. Injected brand information into prompts and specified the language of in-image copy for each target market.
-      - Added a **credit check that blocks generation when credit cannot be verified** to the LangGraph conversation flow, and aligned infrastructure, model and policy error categories between the server and workers.
-      - Implemented **job-based REST APIs and per-feature quotas** for an external campaign agent. Reused the existing generation path with dispatch after transaction commit and row locks for quota reservation. Integration work is ongoing.
-      - Recorded models, settings, prompt versions and available token usage on generated artifacts. Added request- and artifact-level Langfuse tracing to investigate quality and latency issues.
-    stack: [Java & Spring Boot, Python & LangGraph, A2A, Kafka, PostgreSQL, LLM]
+      - Built the **A2A (Agent-to-Agent) server** on Java 21 and Spring Boot 3, with JSON-RPC, SSE streaming, an Agent Card and PostgreSQL task and artifact storage. Supported up to four outputs per request and follow-up requests that build on an earlier image.
+      - Moved long-running generation from synchronous calls to **Kafka-based asynchronous workers**, running the new path in shadow mode before cutting over. Recorded requested outputs before dispatch and tracked completion or failure separately, preserving successful outputs when others fail.
+      - "Designed for **at-least-once delivery**: bounded retries with a dead-letter queue (DLQ), **taskId as the message key** to route a task's events to the same partition within each topic, and idempotent persistence through a (taskId, artifactId) unique key and conditional task-state updates. Ordering is scoped to a partition; retries and duplicate deliveries are handled through these state checks. Model failures are recorded as failed results without triggering automatic regeneration."
+      - Streamed outputs over SSE as they were stored, using persisted task state to coordinate server instances because results can reach a different server instance from the one holding the connection; clients can also retrieve status by polling.
+      - "Implemented the worker's generation features: ad copy, brand extraction, text-to-image, reference-based generation, editing, resizing and A/B variations. Brand information is injected into prompts, in-image copy follows the target market's language, and image bytes are stored in object storage and served through a CDN; events carry image URLs and metadata."
+      - "Added a **credit gate** to the LangGraph conversation flow: check credit before generation and deduct once per eligible turn or request with image results. Blocked generation when credit could not be verified, and aligned infrastructure, model and policy error categories across the server and workers."
+      - Recorded output-level model and generation settings, token usage when reported by the model, and prompt versions for copy. Added per-request and per-output Langfuse observations joined by taskId to trace missing or failed outputs from the client to the worker.
+      - Now building job-based REST APIs and per-feature quotas for an external campaign agent, reusing the generation path with dispatch after transaction commit and row-locked quota reservation.
+    stack: [Java & Spring Boot, Python (asyncio), A2A, Kafka, PostgreSQL, LLM]
 
   - title: Multi-turn LangGraph Campaign Agent
     kicker: langgraph supervisor · tools · retrieval
     period: 2025 — 2026
-    summary: A team project that gathers advertiser requirements through conversation and presents campaign and ad group drafts. I contributed retrieval, previews and domain-policy validation, and built an MCP server exposing ad management and creative APIs.
-    flow: [conversation, extract settings, policy validation, campaign · ad group preview]
+    summary: A team-built LangGraph supervisor agent that gathers an advertiser's requirements over several turns and drafts the campaign, ad group and creatives for the advertiser to confirm. I built and owned the retrieval (RAG) service and its search tool, improved previews and targeting rules, and earlier built an MCP tool server for the prototype.
+    flow: [conversation · validation, landing-page summary, settings extraction (async), campaign · ad group · creative preview, advertiser confirmation]
     highlights:
-      - Built a **RAG pipeline** that chunks and embeds ad manuals and FAQs for OpenSearch retrieval, with an index router and a helper that uses the retrieved documents.
-      - Replaced a separate helper agent with a **tool the supervisor invokes when needed**, and moved conversation summarization and settings extraction into an asynchronous workflow.
-      - "**Removed the LLM call from campaign preview generation**, building settings directly from extracted metadata. Also made ad group previews explicitly use the extracted age and gender targeting values."
-      - Improved age validation for country and account policies and checks for allowed campaign objectives. Managed domain rules separately from Jinja2 prompt templates.
-      - Built a **FastMCP tool server** exposing campaign, ad group and ad retrieval/creation, creative generation and landing-page analysis, with retry and error handling.
-    stack: [Python & LangGraph, MCP, RAG, OpenSearch, LLM]
+      - Built the **retrieval service** end to end with FastAPI and OpenSearch vector search. It loads ad manuals, FAQs, guidelines and setup guides from a configuration repository into per-country indices with version and visibility filters, and exposes ingest and search APIs with per-document error reporting and JWT authentication.
+      - Turned a separate RAG helper agent into a **search tool the supervisor calls when needed**, and replaced an LLM index-routing call with deterministic, country-based index selection.
+      - Moved settings extraction off the request path into a **background workflow** with persisted status that the preview step waits on, and exposed the extracted settings through an internal API used by the copy and image services.
+      - Built campaign previews directly from extracted settings instead of an LLM call, and applied extracted age and gender targeting to ad group previews. Encoded country- and account-level age rules and objective-availability rules in the agent's prompts, and split ad-domain knowledge into standalone prompt files with tests.
+      - Added reliability guards — one campaign per conversation, a gate for LLM-provider outages, crawl-response validation and configurable crawl caching and timeouts — and standardized Sentry error reporting across the agent and backend services.
+      - Built a **FastMCP tool server** that exposed campaign, ad group and ad read/create operations and AI copy and image generation to the prototype's agents, with backoff retries for HTTP calls and error mapping by type.
+    stack: [Python & LangGraph, FastAPI, RAG, OpenSearch, MCP, LLM]
 
   - title: Generative AI Ad Creative Backend
     kicker: genai services
     period: 2024 — 2026
-    summary: A copy and image generation backend for LINE Ads and other LY Corporation ad products. I built the image outpainting service from scratch and extended copy generation, prompt management and credit features.
+    summary: Copy and image generation services behind LINE Ads and other LY Corporation ad products. I built the image generation service from scratch, starting with outpainting, and developed copy-generation, account and credit features.
     flow: [image request, Kafka, model call, result storage, status polling]
     highlights:
-      - Built an **outpainting service for multiple ad aspect ratios**, integrating image generation models with Java 21 and Spring Boot 3. Implemented asynchronous Kafka processing, event publication after transaction commit, and per-ratio result and request-status tracking.
-      - Developed **landing-page brand extraction**, returning empty values for unsupported facts and accepting industry classifications only when they match an allowed list.
-      - Implemented parallel multi-layout generation and model-based inpainting, and integrated external image quality assessment and smart cropping.
-      - Profiled each stage of crawled-image processing, then added image-size limits, removed redundant downloads and applied upload timeouts.
-      - Extended ad copy generation and **prompt version management APIs**. Built daily batch datasets for comparing the performance of AI-generated and other ad copy.
-      - Developed credit consumption, weekly grants and per-feature credit types, with locks for concurrent account creation and grants. Improved request metrics, OpenTelemetry/Sentry tracing and Kubernetes deployment configuration.
+      - "**Built the image generation service from scratch** (Java 21, Spring Boot 3) after prototyping several image models in Python. Implemented Kafka-based outpainting for multiple ad aspect ratios, publishing only after the transaction commits and committing consumer offsets after processing, with per-ratio results to preserve successful outputs when other ratios fail."
+      - "Rebuilt **landing-page brand extraction**: headless-browser crawling with a shared browser pool, request blocking and timeouts, followed by LLM structured output that leaves unsupported fields empty and picks the industry from a fixed list. Added latency and error metrics for crawling and LLM calls."
+      - Built the landing-page product-image pipeline, which crawls images, sanitizes them, re-hosts them in object storage with parallel uploads, and filters and crops them for ad formats using an external image-quality model and smart cropping.
+      - Capped crawled-image size and pixel count, then profiled each processing stage. Reused uploaded bytes instead of downloading them again, re-encoded opaque images as JPEG to reduce transfer size and bounded downloads and uploads with timeouts.
+      - Implemented model-based **inpainting** that generates samples in parallel under a request deadline. Migrated image generation to a newer SDK and model behind V2 endpoints, so V1 clients kept working.
+      - Built the **prompt-version management API** and extended copy generation to new products and markets (Japan, Taiwan and Thailand). Built a daily dataset that links text-ad performance to AI-copy usage, so AI-generated and other copy can be compared.
+      - Built the credit consumption API and per-feature credit types, fixed weekly grant periods at JST week boundaries, and added Redis locks against concurrent account creation and duplicate grants. Added request metrics, linked Sentry errors to OpenTelemetry traces and set up a new Kubernetes test environment.
     stack: [Java & Spring Boot, Python & FastAPI, Kafka, Redis, MySQL, LLM]
 
   - title: Ad Copy Quality Evaluation & Regression Testing
     kicker: evaluation · llm-as-a-judge
     period: "2026"
-    summary: An evaluation service and integration tests for reviewing model and prompt changes to AI-generated ad copy for Taiwan and Thailand. Records both rule checks and qualitative LLM assessments.
+    summary: An evaluation service and regression suite for AI-generated ad copy in Taiwan and Thailand, built to reduce manual review that relied on colleagues fluent in those languages. It runs after deployments to configured test environments and on demand for model or prompt changes, recording both rule checks and LLM assessments.
     flow: [evaluation cases, copy generation, rules · LLM assessment, report]
     highlights:
-      - Built code-based checks for **missing required text, per-field character limits, allowed emoji and regional character/expression rules**.
-      - Configured an LLM to assess grammar, writing conventions and potential third-party rights issues, and to score clarity, persuasiveness, creativity, target relevance and set coherence on a **five-point scale**.
-      - Built integration tests that call the generation API in parallel using cases from a configuration repository. **Test pass/fail is based on rule checks**; LLM assessments are recorded for review.
-      - Produced Markdown/JSON reports and CI summaries to compare model and prompt changes by market.
-    stack: [Python & FastAPI, Java, LLM, LLM-as-a-Judge, GitHub Actions]
+      - Built the evaluation service in FastAPI, with code-based checks for missing required text, per-field character limits, allowed emoji and regional character and expression rules.
+      - Configured an LLM judge to identify the market, check grammar and writing conventions, flag potential third-party rights issues, and score clarity, persuasiveness, creativity, target relevance and set coherence on a **five-point scale**, using a low temperature and a fixed seed to reduce evaluation variability.
+      - Built a Java regression suite that calls the generation API in parallel with curated cases from a configuration repository, through a new endpoint that takes campaign metadata directly so test inputs can be replayed without a conversation. **Pass/fail depends only on rule checks**; LLM assessments are recorded for review.
+      - Ran the suite automatically after deployments to configured test environments through an **Argo CD PostSync hook**, publishing Markdown summaries and JSON report artifacts in GitHub Actions and sending Slack alerts on failure.
+    stack: [Python & FastAPI, Java, LLM-as-a-Judge, GitHub Actions, Argo CD]
 
-  - title: LINE Ads Manager — DSP Core & Reporting
-    kicker: dsp core · data pipeline
+  - title: LINE Ads Manager — Campaign Management & Reporting
+    kicker: campaign management · reporting pipeline
     period: 2022 — 2025
-    summary: Developed and operated campaign management and performance reporting for LINE Ads in Japan, Taiwan and Thailand. My work covered experiment campaigns, configuration validation and asynchronous reporting reliability.
+    summary: The advertiser-facing management and reporting layer of LINE's DSP, used in Japan, Taiwan and Thailand. I was one of the main backend developers of the campaign-management and batch services in 2022–23 and of the reporting service in 2024–25.
     flow: [report request, Kafka, MySQL · Kylin queries, CSV · GZIP, object storage]
     highlights:
-      - "**Co-developed Split Test campaign structures** for comparing creatives, targeting and bid strategies. Implemented experiment-specific constraints, related ad-status synchronization and conversion to regular campaigns."
-      - Improved automatic targeting and **CBO, bid and budget validation**, rejecting invalid settings across the management console, bulk upload and external APIs.
-      - Extended and stabilized the existing **Kafka-based asynchronous reporting pipeline**. Tuned consumer and job concurrency, and improved multi-account CSV generation, compression and upload paths.
-      - Extended **return on ad spend (ROAS) and conversion-value** metrics and breakdowns by carousel slot and app bundle, fixing related aggregation and calculation errors.
-      - Introduced query priorities and timeouts by user type and migrated Kylin queries to a new cluster. Tracked operations through request, success and failure metrics and execution records.
-    stack: [Java & Spring Boot, JPA & QueryDSL, MySQL, Kafka, Kylin]
+      - "**Co-developed A/B test campaigns**, implementing experiment-specific constraints for creative, targeting and bidding tests, synchronized status changes across related ads, and conversion to regular campaigns."
+      - Built validation, bulk-upload support and rollout across supported markets for **automatic targeting**, and added **CBO, bid and budget validation** that rejects invalid settings in the console, bulk upload and external API.
+      - Implemented **Thailand's PDPA age-targeting rules** across the console, bulk upload, external API and reports, with an API and a Spring Batch job to migrate existing ad groups. Also migrated advanced targeting to a new segment schema and added new audience segments for Japan.
+      - Built a **Kafka-based asynchronous report export** (request → Kafka → MySQL → CSV/GZIP → object storage, with a cleanup job). Stabilized the existing report pipeline by adding concurrent consumers to reduce lag, tuning poll and thread-pool settings and streaming multi-account reports straight into compressed uploads.
+      - Introduced **ROAS and purchase-value metrics** end to end, from Kafka ingestion and report tables to daily rollups, reports, charts and the external API, then added click and engaged-view variants and fixed aggregation errors.
+      - Migrated Kylin report queries, including placement, app-bundle and carousel-slot breakdowns, to a new cluster with merged tables. Prioritized console over external-API reach-report queries with per-user-type timeouts, and added request, success and failure metrics and execution-time records.
+    stack: [Java & Spring Boot, JPA & QueryDSL, MySQL, Kafka, Kylin, Spring Batch]
 
 experience:
   - company: LINE Plus (LINE+)
@@ -129,25 +132,25 @@ experience:
     link: https://linepluscorp.com/
     role: Software Engineer, LINE Ads Platform
     period: 2022.01 — present
-    summary: Started with ad management and performance reporting for LINE Ads, then expanded into generative AI services and agent backends in the same advertising domain.
+    summary: Started with campaign management and performance reporting for LINE Ads, then expanded into generative AI services and agent backends in the same advertising domain.
     highlights:
-      - "**2026 —** Built the creative agent's A2A server and Kafka-based generation workers, plus ad copy evaluation and regression tests."
-      - "**2025 – 2026 —** Developed campaign-agent retrieval, previews and policy validation, and an MCP tool server."
-      - "**2024 – 2026 —** Built the image generation service; extended copy generation, prompt management and credit features."
-      - "**2022 – 2025 —** Developed and operated DSP campaign management, Split Test, configuration validation and performance reporting."
+      - "**2026 —** Created the creative agent's A2A server and Kafka-based generation workers; built an ad copy evaluation service with post-deployment regression tests."
+      - "**2025 – 2026 —** Built the retrieval service and an MCP tool server, and improved previews and targeting rules for a team-built LangGraph campaign agent."
+      - "**2024 – 2026 —** Built the image generation service from scratch; contributed to copy generation, brand extraction and credit features."
+      - "**2022 – 2025 —** Co-developed A/B test campaigns and targeting and budget validation; built the report export, ROAS metrics and Kylin migration in LINE Ads Manager."
       - Ran recurring study sessions to support learning and knowledge sharing within the team.
 
 skills:
   - group: AI / LLM
     items: [LLM, LangGraph, A2A, MCP, RAG, OpenSearch, LLM-as-a-Judge]
   - group: Backend
-    items: [Java & Spring Boot, Python & FastAPI, JPA & QueryDSL]
+    items: [Java & Spring Boot, Python & FastAPI, JPA & QueryDSL, MyBatis, Spring Batch]
   - group: Data & Messaging
     items: [Kafka, MySQL, PostgreSQL, Redis, Kylin]
   - group: Operations & Quality
-    items: [Kubernetes, Docker, GitHub Actions, OpenTelemetry, Langfuse]
+    items: [Kubernetes, Docker, GitHub Actions, Argo CD, OpenTelemetry, Langfuse, TDD]
   - group: Advertising
-    items: [campaign structure, Split Test, targeting, bid · budget validation, CBO, ad creatives, ROAS reporting]
+    items: [campaign structure, A/B testing, targeting, bid · budget validation, CBO, ad creatives, ROAS reporting]
 
 education:
   - school: Inha University
@@ -176,13 +179,14 @@ ui:
   stages_label: Main processing flow
   stack_label: Tech stack
   diagrams_label: Project diagrams
-  campaign_graph_title: Campaign agent workflow concept
-  campaign_graph_desc: A conceptual workflow with brief analysis, campaign planning, parallel targeting and creative agents, quality evaluation, retries and human review. This illustrates a possible design, rather than the deployed architecture.
-  campaign_graph_caption: Campaign planning → generation → review · concept
+  graph_legend: Main contributions
+  campaign_graph_title: "Campaign agent: supervisor, tools and preview flow"
+  campaign_graph_desc: "Each turn, a LangGraph supervisor calls tools and sub-agents for knowledge search, input validation and landing-page summaries, then replies with the next question. After the summary, settings are extracted in the background; the preview step waits for them and builds campaign, ad group and creative drafts for the advertiser to confirm. Highlighted nodes mark my main contributions: retrieval, settings extraction and previews."
+  campaign_graph_caption: supervisor + tools → async extraction → preview
   graph_pause: Pause
   graph_play: Auto-play
   graph_title: Kafka-based asynchronous creative generation
-  graph_desc: The A2A server stores the task and publishes a request to Kafka. Workers consume requests and publish result events to a separate Kafka topic. The server persists results idempotently and returns them through SSE or status polling. Events use taskId as the partition key, and results are consumed in order within each topic partition.
+  graph_desc: "The A2A server stores the task and publishes a request to Kafka. Workers consume it and publish per-output and completion events to a separate result topic. The server persists results idempotently and streams them over SSE, with status polling as a fallback. Events use taskId to select a partition within each topic. Ordering is partition-scoped, and persistence handles redelivery and duplicates with idempotent updates. Highlighted nodes mark my main contributions: the A2A server, generation workers and result storage."
   graph_caption: Kafka requests → generation workers → Kafka results
   sections_label: Page sections
   portrait_alt: Portrait of Jae Min Cho
